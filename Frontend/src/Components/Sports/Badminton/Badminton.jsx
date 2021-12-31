@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react'
-import Timeline from '../Card/Timeline'
+import Timeline from '../../Card/Timeline'
 import Button from '@mui/material/Button';
-import '../component.css';
+import '../../component.css';
 
 export default function Badminton() {
    const [active, setActive]= useState("girls")

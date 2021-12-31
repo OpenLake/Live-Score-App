@@ -7,11 +7,18 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Card from '../Card/Card'
 import { getUsers } from '../Service/api';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+   timeline:{
+     marginLeft:'1px'
+   }
+})
 
 export default function ColorsTimeline() {
 
   const [users, setUsers] = useState([]);
-    
+  const classes = useStyles();
 
     useEffect(() => {
         getAllUsers();
@@ -25,7 +32,7 @@ export default function ColorsTimeline() {
 
   function cardtime(val){
     return(
-      <Timeline >
+      <Timeline className={classes.timeline} >
       <TimelineItem>
         <TimelineSeparator>
           <TimelineDot color="secondary" />
