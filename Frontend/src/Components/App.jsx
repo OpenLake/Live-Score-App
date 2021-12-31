@@ -2,9 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import React from 'react';
 import Home from './Home'
 import Navbar from './Navbar'
-import Badminton from './Sports/Badminton'
+import Badminton from './Sports/Badminton/Badminton'
 import Cricket from './Sports/Cricket'
-import BadmintonViewScore from './Sports/BadmintonViewScore'
+import BadmintonViewScore from './Sports/Badminton/BadmintonViewScore'
 
 function App() {
   return (
