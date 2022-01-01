@@ -8,15 +8,15 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 export default function MultiActionAreaCard({prop}) {
   let toshow= prop.winner === "Match pending";
-  
-  var newDate = new Date(prop.date).toLocaleDateString();
+  console.log(prop.date)
+  var newDate = new Date(prop.date).toLocaleDateString('en-GB');
 // var date = d.getDate();
 // var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
 // var year = d.getFullYear();
 // var newDate = date + "/" + month + "/" + year;
 
   return (
-    <Card style={{boxShadow: '0px 1px 10px 1px black'}} sx={{ maxWidth: 500 }}>
+    <Card style={{boxShadow: '0px 1px 10px 1px black', marginBottom:'20px'}} sx={{ maxWidth: 700 }}>
       <CardActionArea>
 
         <div style={{height:'50px',

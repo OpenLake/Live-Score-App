@@ -5,21 +5,21 @@ import Button from '@mui/material/Button';
 import '../../component.css';
 
 export default function Badminton() {
-   const [active, setActive]= useState("girls")
+   const [active, setActive]= useState("female")
   return (
     <div>
-      { active ==="boys" &&
-        <Button onClick={()=> setActive("girls")} style={{margin:'3px 3px'}} variant="contained">
+      { active ==="male" &&
+        <Button onClick={()=> setActive("female")} style={{margin:'3px 3px'}} variant="contained">
         GIRLS
         </Button>
       }
-      { active ==="girls" &&
-        <Button onClick={()=> setActive("boys")} style={{margin:'3px 3px'}} variant="contained">
+      { active ==="female" &&
+        <Button onClick={()=> setActive("male")} style={{margin:'3px 3px'}} variant="contained">
          BOYS
         </Button>
       }
-      {/* <Timeline user={active}/> */}
-      <Timeline />
+      <Timeline activeuser={active}/>
+      {/* <Timeline /> */}
     </div>
   )
 }

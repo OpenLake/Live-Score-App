@@ -23,3 +23,17 @@ export const getUserById = async (request, response) => {
         response.status(404).json({ message: error.message })
     }
 }
+
+// Save data of edited user in the database
+export const editUser = async (request, response) => {
+    let user = await User.findById(request.params.id);
+    user = request.body;
+
+    const editUser = new User(user);
+    try{
+        await User.updateOne({_id: request.params.id}, editUser);
+        response.status(201).json(editUser);
+    } catch (error){
+        response.status(409).json({ message: error.message});     
+    }
+}

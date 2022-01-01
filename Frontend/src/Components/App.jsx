@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Badminton from './Sports/Badminton/Badminton'
 import Cricket from './Sports/Cricket'
 import BadmintonViewScore from './Sports/Badminton/BadmintonViewScore'
+import Editscore from './Sports/Badminton/Editscore'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
               <Route exact path="/badminton" element={<Badminton/>} />
               <Route exact path="/cricket" element={<Cricket/>} />
               <Route exact path="/badmintonscore/:id"  element={<BadmintonViewScore/>} />
+              <Route exact path="/editscore/:id/:set"  element={<Editscore/>} />
           </Routes>
      </>
   );

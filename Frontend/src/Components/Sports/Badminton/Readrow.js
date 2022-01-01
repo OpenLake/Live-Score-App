@@ -20,7 +20,7 @@ function Readrow({user}){
                         <TableCell>{user.set1[0].$numberDecimal}</TableCell>
                         <TableCell>{user.set1[1].$numberDecimal}</TableCell>
                         <TableCell>
-                            <Button color="primary" variant="contained" style={{marginRight:10}} >Edit</Button> 
+                            <Button href={`/editscore/${user._id}/set1`} color="primary" variant="contained" style={{marginRight:10}} >Edit</Button> 
                         </TableCell>
                     </TableRow>
                     <TableRow className={classes.row}>
