@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FormControl,Input,Table, TableHead, TableCell, TableRow, TableBody,makeStyles } from '@material-ui/core'
-import { getUsers } from '../../Service/api';
+import { getUsers, editUser } from '../../Service/api';
 import { Button} from '@mui/material';
 
 
@@ -36,9 +36,9 @@ const useStyles = makeStyles({
 
 function Editscore(props) {
     const [user, setUser] = useState(initialValue);
-    const[name,setName]=useState("hello")
+    const [show,setShow] = useState(false);
     const classes = useStyles();
-    const { title,winner,date,set1,set2,set3,gender } = user;
+    // const { title,winner,date,set1,set2,set3,gender } = user;
     //const name = props.match.params.name;
     const { id , set} = useParams();
   
@@ -55,15 +55,22 @@ const loadUserDetails = async() => {
 
 }
 
+const editUserDetails = async() => {
+    console.log(user)
+    const response = await editUser(id, user);
+    console.log("done")
+    loadUserDetails()
+}
 
 const onValueChange = (e) => {
     const newData={...user}
-    // console.log(e.target.value)
-    // console.log(newData.set1[0].$numberDecimal)
-     newData.set1[0].$numberDecimal=e.target.value
-
-    //  console.log(newData)
-    // console.log(e.target.value)
+    console.log(e.target.value)
+    console.log(e.target.name)
+   // console.log(newData.set1[0])
+   if(e.target.name==="one")
+     newData[set][0]=Number(e.target.value) 
+     else
+     newData[set][1]=Number(e.target.value) 
  setUser(newData)
    console.log(user)
 }
@@ -86,16 +93,16 @@ const title_array=user.title.split(' ');
                         <TableCell>{set}</TableCell> 
                         <TableCell>
                         <FormControl>
-                          <Input onChange={(e) => onValueChange(e)} name='set1' value={user.set1[0].$numberDecimal} autoComplete="off"/>
+                          <Input onChange={(e) => onValueChange(e)} name="one" value={user[set][0]} autoComplete="off"/>
                         </FormControl>
                         </TableCell>
                         <TableCell>
                         <FormControl>
-                          <Input  name='set1' value={user.set1[1].$numberDecimal} autoComplete="off" />
-                        </FormControl>
+                          <Input  onChange={(e) => onValueChange(e)} name="two" value={user[set][1]} autoComplete="off" />
+                        </FormControl>   
                         </TableCell>
                         <TableCell>
-                            <Button  color="primary" variant="contained" style={{marginRight:10}} >Save</Button> 
+                            <Button  onClick={() => editUserDetails()}  color="primary" variant="contained" style={{marginRight:10}} >Save</Button> 
                         </TableCell>
                     </TableRow>
             </TableBody>
