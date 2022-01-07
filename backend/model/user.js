@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose =require('mongoose');
 
 const badmintonSchema = mongoose.Schema({
     title: String,
@@ -13,4 +13,4 @@ const badmintonSchema = mongoose.Schema({
 
 const postUser = mongoose.model('badminton', badmintonSchema);
 
-export default postUser;
+module.exports= postUser;

@@ -10,7 +10,7 @@ const useStyles = makeStyles({
    }
 })
 
-export default function ColorsTimeline(activeuser) {
+export default function ColorsTimeline(props) {
 
   const [users, setUsers] = useState([]);
   const classes = useStyles();
@@ -26,12 +26,15 @@ export default function ColorsTimeline(activeuser) {
     }
 
   function cardtime(val){
+    const show=val.gender===props.activeuser; //matching gender
+    const sport= val.sports===props.sport; //matching sport
+    const validData=show && sport //both condition should satisfy.
     return(
       <>
      
-    { val.gender===activeuser.activeuser &&
+    { validData &&
       <div className={classes.timeline}>
-            <Card   prop={val} />  
+            <Card key={val._id}  prop={val} />  
         </div>
     }
  

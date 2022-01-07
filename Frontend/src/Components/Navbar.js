@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
+
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -116,6 +117,13 @@ const Navbar = () => {
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
                    CRICKET
+                 </Button>
+              </Link>
+              <Link to="/tabletennis"  style={{ textDecoration: 'none' }}>
+                 <Button
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                   TABLE TENNIS
                  </Button>
               </Link>
           </Box>

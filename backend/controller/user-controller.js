@@ -1,7 +1,7 @@
-import User from '../model/user.js';
+const User= require('../model/user.js');
 
 // Get all users
-export const getUsers = async (request, response) => {
+const getUsers = async (request, response) => {
     try{
         const users = await User.find().sort( { date: 1 } ); // for giving data in sorted order.
         response.status(200).json(users);
@@ -12,7 +12,7 @@ export const getUsers = async (request, response) => {
 
 
 // Get a user by id
-export const getUserById = async (request, response) => {
+const getUserById = async (request, response) => {
     try{
         const user = await User.findById(request.params.id);
         response.status(200).json(user);
@@ -22,7 +22,7 @@ export const getUserById = async (request, response) => {
 }
 
 // Save data of edited user in the database
-export const editUser = async (request, response) => {
+const editUser = async (request, response) => {
     // let user = await User.findById(request.params.id);
     // user = request.body;
 
@@ -36,6 +36,7 @@ export const editUser = async (request, response) => {
     try{
         const newUser=await User.findByIdAndUpdate({_id:request.params.id},{$set:request.body},{new:true})
         console.log(newUser)
+        request.app.io.emit('updated_badmintonScore',newUser)
         response.status(201).json(newUser);
         console.log("done")
     }
@@ -43,3 +44,5 @@ export const editUser = async (request, response) => {
         response.status(409).json({ message: error.message}); 
     }
 }
+
+module.exports={ getUsers, getUserById, editUser }

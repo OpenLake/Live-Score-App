@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { FormControl,Input,Table, TableHead, TableCell, TableRow, TableBody,makeStyles } from '@material-ui/core'
 import { getUsers, editUser } from '../../Service/api';
 import { Button} from '@mui/material';
+import {io} from 'socket.io-client';
+const socket=io('http://localhost:8080')
 
 
 
@@ -36,11 +38,21 @@ const useStyles = makeStyles({
 
 function Editscore(props) {
     const [user, setUser] = useState(initialValue);
-    const [show,setShow] = useState(false);
+    const [show,setShow] = useState(true);
+    const [socket,setSocket] = useState(null);
+    const [data,setData] = useState(null);
     const classes = useStyles();
     // const { title,winner,date,set1,set2,set3,gender } = user;
     //const name = props.match.params.name;
     const { id , set} = useParams();
+  
+    // useEffect(() => {
+    //   //  setSocket(io("http://localhost:8080"))
+    //     socket.on('updated_badmintonScore',user=>{
+    //         console.log('got the data')
+    //         setUser(user)
+    //     })
+    // });
   
   
   useEffect(() => {
@@ -49,18 +61,48 @@ function Editscore(props) {
     loadUserDetails();
 },[]);
 
+// useEffect(()=>{
+//     if(data!=null)
+//     {
+//         setUser(user)
+//     }
+
+// },[data])
+
 const loadUserDetails = async() => {
     const response = await getUsers(id);
     setUser(response.data);
 
 }
+// let socket=io()
+//     if(user){
+//  
+//     }
+socket.on('updated_badmintonScore',(user)=>{
+        console.log('got the data',user)  
+        setData(user)   
+    })
 
 const editUserDetails = async() => {
-    console.log(user)
+   // console.log(user)
     const response = await editUser(id, user);
+   // socket.emit('update_badmintonScore',user)
+    // socket.on('updated_badmintonScore',(user,id)=>{
+    //     console.log('got the data',user)  
+    //     setData(user)   
+    // })
     console.log("done")
-    loadUserDetails()
+    
+
+    //saved.
+    setShow(false);
+    setTimeout(()=>{
+        console.log("changing");
+        setShow(true)
+    },1000)
+    
 }
+
 
 const onValueChange = (e) => {
     const newData={...user}
@@ -101,9 +143,15 @@ const title_array=user.title.split(' ');
                           <Input  onChange={(e) => onValueChange(e)} name="two" value={user[set][1]} autoComplete="off" />
                         </FormControl>   
                         </TableCell>
+                        {show ? 
                         <TableCell>
                             <Button  onClick={() => editUserDetails()}  color="primary" variant="contained" style={{marginRight:10}} >Save</Button> 
+                        </TableCell> :
+                        <TableCell>
+                          
+                            <Button style={{marginRight:10, backgroundColor: '#0f766e', color:'white'}} >Saved</Button> 
                         </TableCell>
+                        }
                     </TableRow>
             </TableBody>
             </Table>            
