@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 function BadmintonViewScore(props) {
     const [user, setUser] = useState(initialValue);
-    const[editcell,seteditcell]=useState(true);
+    // const[editcell,seteditcell]=useState(true);
     const classes = useStyles();
    // const { title,winner,date,set1,set2,set3,gender } = user;
     //const name = props.match.params.name;
@@ -51,6 +51,7 @@ const loadUserDetails = async() => {
     const response = await getUsers(id);
     setUser(response.data);
 }
+console.log(user.date)
 
 const title_array=user.title.split(' ');
     return(

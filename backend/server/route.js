@@ -1,12 +1,11 @@
-import express from 'express';
-import { getUsers, getUserById } from '../controller/user-controller.js';
+const express=require('express');
+const { getUsers, getUserById, editUser } =require('../controller/user-controller.js');
 
 const router = express.Router();
 
 router.get('/', getUsers);
-// router.post('/add', addUser);
 router.get('/:id', getUserById);
-// router.put('/:id', editUser);
-// router.delete('/:id', deleteUser);
+router.put('/:id', editUser);
 
-export default router;
+
+module.exports= router;

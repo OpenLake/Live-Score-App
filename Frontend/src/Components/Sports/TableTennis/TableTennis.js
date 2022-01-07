@@ -4,7 +4,7 @@ import Timeline from '../../Card/Timeline'
 import Button from '@mui/material/Button';
 import '../../component.css';
 
-export default function Badminton() {
+export default function TableTennis() {
    const [active, setActive]= useState("female")
   return (
     <div>
@@ -18,7 +18,7 @@ export default function Badminton() {
          BOYS
         </Button>
       }
-      <Timeline activeuser={active} sport='badminton'/>
+      <Timeline activeuser={active} sport='tennis'/>
       {/* <Timeline /> */}
     </div>
   )
