@@ -1,8 +1,6 @@
-import React from "react";
+import React from 'react';
 
 function Cricket() {
-    return(
-        <>Hello Cricket</>
-    )
+	return <>Hello Cricket</>;
 }
 export default Cricket;
