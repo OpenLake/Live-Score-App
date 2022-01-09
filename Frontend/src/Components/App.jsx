@@ -7,6 +7,7 @@ import Cricket from './Sports/Cricket';
 import BadmintonViewScore from './Sports/Badminton/BadmintonViewScore';
 import Editscore from './Sports/Badminton/Editscore';
 import TableTennis from './Sports/TableTennis/TableTennis';
+import AddMatch from './Sports/Badminton/AddMatch';
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 				<Route exact path="/badminton" element={<Badminton />} />
 				<Route exact path="/cricket" element={<Cricket />} />
 				<Route exact path="/tabletennis" element={<TableTennis />} />
+				<Route exact path="/addmatch/:sport" element={<AddMatch/>} />
 				<Route
 					exact
 					path="/badmintonscore/:id"

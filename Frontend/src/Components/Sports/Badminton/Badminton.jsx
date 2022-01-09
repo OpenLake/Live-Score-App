@@ -7,6 +7,10 @@ export default function Badminton() {
 	const [active, setActive] = useState('female');
 	return (
 		<div>
+		        <Button href="/addmatch/badminton" style={{ margin: '3px 3px' }}
+					variant="contained">
+					Add match
+				</Button>
 			{active === 'male' && (
 				<Button
 					onClick={() => setActive('female')}

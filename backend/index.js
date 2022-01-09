@@ -14,7 +14,7 @@ app.use('/users', Routes);
 
 const URL =
 	'mongodb+srv://badminton:badminton@cluster0.t3oqc.mongodb.net/Cluster0?retryWrites=true&w=majority';
-const PORT = '8080';
+const PORT = process.env.PORT || 8080;
 mongoose
 	.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => {

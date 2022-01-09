@@ -12,7 +12,9 @@ import {
 import { getUsers } from '../../Service/api';
 import Readrow from './Readrow';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:8080');
+
+const PORT = process.env.PORT || 8080;
+const socket = io(`http://localhost:${PORT}`);
 
 
 
@@ -24,7 +26,7 @@ const initialValue = {
 	set2: [0, 0],
 	set3: [0, 0],
 	gender: '',
-	sport: '',
+	sports: '',
 };
 const useStyles = makeStyles({
 	table: {
@@ -49,7 +51,6 @@ function BadmintonViewScore(props) {
 	const classes = useStyles();
 	const { id } = useParams();
 	socket.on('updated_badmintonScore', user => {
-		console.log('got the data', user);
 		setUser(user);
 	});
 	useEffect(() => {

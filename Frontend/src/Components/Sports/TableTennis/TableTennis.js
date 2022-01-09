@@ -7,6 +7,10 @@ export default function TableTennis() {
 	const [active, setActive] = useState('female');
 	return (
 		<div>
+		    <Button href="/addmatch/tennis" style={{ margin: '3px 3px' }}
+					variant="contained">
+					Add match
+			</Button>
 			{active === 'male' && (
 				<Button
 					onClick={() => setActive('female')}

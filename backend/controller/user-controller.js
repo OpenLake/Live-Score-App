@@ -20,6 +20,20 @@ const getUserById = async (request, response) => {
 	}
 };
 
+//add data
+const addUser = async (request, response) => {
+    const user = request.body;
+    console.log("inside")
+
+    const newUser = new User(user);
+    try{
+        await newUser.save();
+        response.status(201).json(newUser);
+    } catch (error){
+        response.status(409).json({ message: error.message});     
+    }
+}
+
 // Save data of edited user in the database
 const editUser = async (request, response) => {
 	try {
@@ -37,4 +51,4 @@ const editUser = async (request, response) => {
 	}
 };
 
-module.exports = { getUsers, getUserById, editUser };
+module.exports = { getUsers, getUserById, editUser,addUser };

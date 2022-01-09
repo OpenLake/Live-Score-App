@@ -14,7 +14,9 @@ import {
 import { getUsers, editUser } from '../../Service/api';
 import { Button } from '@mui/material';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:8080');
+
+const PORT = process.env.PORT || 8080;
+const socket = io(`http://localhost:${PORT}8080`);
 
 const initialValue = {
 	title: '',
@@ -24,7 +26,7 @@ const initialValue = {
 	set2: [0, 0],
 	set3: [0, 0],
 	gender: '',
-	sport: '',
+	sports: '',
 };
 const useStyles = makeStyles({
 	table: {
@@ -50,8 +52,6 @@ function Editscore(props) {
 	const classes = useStyles();
 	const { id, set } = useParams();
 	useEffect(() => {
-		console.log(id);
-		console.log(set);
 		loadUserDetails();
 	}, []);
 
@@ -60,7 +60,6 @@ function Editscore(props) {
 		setUser(response.data);
 	};
 	socket.on('updated_badmintonScore', user => {
-		console.log('got the data', user);
 		setUser(user);
 	});
 
