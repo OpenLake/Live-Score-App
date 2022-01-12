@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React ,{useContext} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +11,11 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { UserContext } from '../UserContext';
 
 const Navbar = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
+	const {admin,setAdmin}=useContext(UserContext)
 
 	const handleOpenNavMenu = event => {
 		setAnchorElNav(event.currentTarget);
@@ -22,6 +24,12 @@ const Navbar = () => {
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
 	};
+
+	const logout=()=>{
+		setAdmin(false)
+		localStorage.setItem('islogin','')
+
+	}
 
 	return (
 		<AppBar position="static">
@@ -75,20 +83,13 @@ const Navbar = () => {
 									<Typography textAlign="center">BADMINTON</Typography>
 								</Link>
 							</MenuItem>
-
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link
-									to="/cricket"
+							<Link
+									to="/tabletennis"
 									style={{ textDecoration: 'none', color: 'black' }}
 								>
-									<Typography textAlign="center">CRICKET</Typography>
+									<Typography textAlign="center">TABLE TENNIS</Typography>
 								</Link>
-							</MenuItem>
-							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign="center">TABLE TENNIS</Typography>
-							</MenuItem>
-							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign="center">WINNER</Typography>
 							</MenuItem>
 						</Menu>
 					</Box>
@@ -108,11 +109,6 @@ const Navbar = () => {
 								BADMINTON
 							</Button>
 						</Link>
-						<Link to="/cricket" style={{ textDecoration: 'none' }}>
-							<Button sx={{ my: 2, color: 'white', display: 'block' }}>
-								CRICKET
-							</Button>
-						</Link>
 						<Link to="/tabletennis" style={{ textDecoration: 'none' }}>
 							<Button sx={{ my: 2, color: 'white', display: 'block' }}>
 								TABLE TENNIS
@@ -121,9 +117,18 @@ const Navbar = () => {
 					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
-						<Button sx={{ p: 0 }}>
+					{admin ?
+						<Link to="/" style={{ textDecoration: 'none' }}>
+						<Button sx={{ p: 0 }}  style={{ color: 'white' }} onClick={()=> logout()}> 
+							Logout
+						</Button>
+					</Link>:
+					<Link to="/login" style={{ textDecoration: 'none' }}>
+						<Button sx={{ p: 0 }}  style={{ color: 'white' }}> 
 							<AccountCircleIcon fontSize="large" style={{ color: 'white' }} />
 						</Button>
+					</Link>
+					}
 					</Box>
 				</Toolbar>
 			</Container>

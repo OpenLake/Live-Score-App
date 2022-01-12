@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function MultiActionAreaCard({ prop }) {
 	var currentDate = new Date().toISOString();
@@ -48,14 +49,15 @@ export default function MultiActionAreaCard({ prop }) {
 				</CardContent>
 			</CardActionArea>
 			<CardActions>
+			<Link to={`/badmintonscore/${prop._id}`} style={{ textDecoration: 'none' }}>
 				<Button
-					href={`/badmintonscore/${prop._id}`}
 					size="small"
 					color="primary"
 					disabled={toshow}
 				>
 					View Score
 				</Button>
+			</Link>
 			</CardActions>
 		</Card>
 	);

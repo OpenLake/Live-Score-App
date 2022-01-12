@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { TableCell, TableRow, makeStyles } from '@material-ui/core';
+import { TableCell, TableRow, makeStyles} from '@material-ui/core';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
 	row: {
@@ -25,14 +26,15 @@ function Readrow({ user }) {
 					<TableCell>{user[val][1]}</TableCell>
 					{showedit && (
 						<TableCell>
+						<Link to={`/editscore/${user._id}/${val}`} style={{ textDecoration: 'none' }}>
 							<Button
-								href={`/editscore/${user._id}/${val}`}
 								color="primary"
 								variant="contained"
 								style={{ marginRight: 10 }}
 							>
 								Edit
 							</Button>
+						 </Link>
 						</TableCell>
 					)}
 				</TableRow>
