@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { FormGroup,Typography } from '@material-ui/core';
 import {
 	FormControl,
 	Input,
@@ -14,6 +15,8 @@ import {
 import { getUsers, editUser } from '../../Service/api';
 import { Button } from '@mui/material';
 import { io } from 'socket.io-client';
+import { UserContext } from '../../../UserContext';
+import { Link } from 'react-router-dom';
 
 const PORT = process.env.PORT || 8080;
 const socket = io(`http://localhost:${PORT}8080`);
@@ -44,11 +47,19 @@ const useStyles = makeStyles({
 			fontSize: 18,
 		},
 	},
+	container: {
+        width: '50%',
+        margin: '5% 0 0 25%',
+        '& > *': {
+            marginTop: 20
+        }
+    }
 });
 
 function Editscore(props) {
 	const [user, setUser] = useState(initialValue);
 	const [show, setShow] = useState(true);
+	const {admin,setAdmin}=useContext(UserContext)
 	const classes = useStyles();
 	const { id, set } = useParams();
 	useEffect(() => {
@@ -80,6 +91,7 @@ function Editscore(props) {
 	const title_array = user.title.split(' ');
 	return (
 		<>
+		{admin ?
 			<Table className={classes.table}>
 				<TableHead>
 					<TableRow className={classes.thead}>
@@ -138,7 +150,16 @@ function Editscore(props) {
 						)}
 					</TableRow>
 				</TableBody>
-			</Table>
+			</Table>:
+			<div>
+        <FormGroup className={classes.container}>
+        <Typography variant="h4">Please Login to continue.</Typography>
+        <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Button  variant="contained" color="primary">Go to Login Page</Button>
+        </Link>
+        </FormGroup>
+        </div>
+        }
 		</>
 	);
 }

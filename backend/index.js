@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 
 const Routes = require('./server/route.js');
 
@@ -12,8 +14,7 @@ app.use(cors());
 
 app.use('/users', Routes);
 
-const URL =
-	'mongodb+srv://badminton:badminton@cluster0.t3oqc.mongodb.net/Cluster0?retryWrites=true&w=majority';
+const URL =process.env.MONGO_URL;
 const PORT = process.env.PORT || 8080;
 mongoose
 	.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })

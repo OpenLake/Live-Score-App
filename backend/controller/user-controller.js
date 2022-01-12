@@ -42,10 +42,8 @@ const editUser = async (request, response) => {
 			{ $set: request.body },
 			{ new: true },
 		);
-		console.log(newUser);
 		request.app.io.emit('updated_badmintonScore', newUser);
 		response.status(201).json(newUser);
-		console.log('done');
 	} catch (error) {
 		response.status(409).json({ message: error.message });
 	}

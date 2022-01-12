@@ -24,7 +24,6 @@ function Home() {
 						transform: 'translate(-50%, -50%)',
 					}}
 				>
-					{' '}
 					PRAYATNA
 				</Typography>
 			</div>

@@ -9,9 +9,11 @@ import {
 	TableBody,
 	makeStyles,
 } from '@material-ui/core';
-import { getUsers } from '../../Service/api';
+import { getUsers, editUser } from '../../Service/api';
 import Readrow from './Readrow';
 import { io } from 'socket.io-client';
+import { FormGroup, FormControl, InputLabel, Input, Typography } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 const PORT = process.env.PORT || 8080;
 const socket = io(`http://localhost:${PORT}`);
@@ -48,6 +50,7 @@ const useStyles = makeStyles({
 
 function BadmintonViewScore(props) {
 	const [user, setUser] = useState(initialValue);
+	const [show, setShow] = useState(true);
 	const classes = useStyles();
 	const { id } = useParams();
 	socket.on('updated_badmintonScore', user => {
@@ -60,6 +63,18 @@ function BadmintonViewScore(props) {
 	const loadUserDetails = async () => {
 		const response = await getUsers(id);
 		setUser(response.data);
+	};
+	const onValueChange = e => {
+		const newData = { ...user };
+		newData['winner'] = (e.target.value);
+		setUser(newData);
+	};
+	const editUserDetails = async () => {
+		const response = await editUser(id, user);
+		setShow(false);
+		setTimeout(() => {
+			setShow(true);
+		}, 1000);
 	};
 
 	const title_array = user.title.split(' ');
@@ -78,6 +93,39 @@ function BadmintonViewScore(props) {
 					<Readrow user={user} />
 				</TableBody>
 			</Table>
+
+
+
+			<FormGroup style={{width:'30%'}}>
+			{/* <Typography style= {{marginTop:'5%'}} variant="h5">Winner of the match</Typography> */}
+            <FormControl style={{marginLeft: '6%', marginTop: '3%'}}>
+                <InputLabel  htmlFor="my-input">Winner</InputLabel>
+                <Input  onChange={(e) => onValueChange(e)} name='winner' />
+            </FormControl>
+			</FormGroup>
+			{show ? (
+								<Button
+									onClick={() => editUserDetails()}
+									color="primary"
+									variant="contained"
+									style={{margin: '1% 2%'}}
+								>
+									Save
+								</Button>
+						) : (
+						
+								<Button
+									style={{
+										margin: '1% 2%',
+										backgroundColor: '#0f766e',
+										color: 'white',
+									}}
+								>
+									Saved
+								</Button>
+							
+						)}
+			
 		</>
 	);
 }
