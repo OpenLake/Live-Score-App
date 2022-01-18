@@ -1,0 +1,23 @@
+{
+	"name": "live-score-app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier . --write"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Sakshisaraswat23/Live-Score-App.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Sakshisaraswat23/Live-Score-App/issues"
+	},
+	"homepage": "https://github.com/Sakshisaraswat23/Live-Score-App#readme",
+	"dependencies": {
+		"prettier": "^2.5.1"
+	}
+}
