@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import Timeline from '../../Card/Timeline';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 import '../../component.css';
 
 export default function TableTennis() {
 	const [active, setActive] = useState('female');
 	return (
 		<div>
-		    <Button href="/addmatch/tennis" style={{ margin: '3px 3px' }}
+		   <Link to="/addmatch/tennis" style={{ textDecoration: 'none' }}>
+		        <Button style={{ margin: '3px 3px' }}
 					variant="contained">
 					Add match
-			</Button>
+				</Button>
+			</Link>
 			{active === 'male' && (
 				<Button
 					onClick={() => setActive('female')}

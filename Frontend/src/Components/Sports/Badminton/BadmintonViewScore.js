@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
@@ -14,9 +14,12 @@ import Readrow from './Readrow';
 import { io } from 'socket.io-client';
 import { FormGroup, FormControl, InputLabel, Input, Typography } from '@material-ui/core';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../../../UserContext';
 
 const PORT = process.env.PORT || 8080;
-const socket = io(`http://localhost:${PORT}`);
+const socket = io("https://backendlivescore.herokuapp.com/");
+
 
 
 
@@ -46,11 +49,22 @@ const useStyles = makeStyles({
 			fontSize: 18,
 		},
 	},
+	container: {
+        width: '50%',
+        margin: '5% 0 0 25%',
+        '& > *': {
+            marginTop: 20
+        }
+    }
 });
 
 function BadmintonViewScore(props) {
 	const [user, setUser] = useState(initialValue);
 	const [show, setShow] = useState(true);
+	const {admin,setAdmin}=useContext(UserContext)
+	var currentDate = new Date().toLocaleDateString('en-GB');
+	var matchDate = new Date(user.date).toLocaleDateString('en-GB');
+	const showedit = matchDate === currentDate;
 	const classes = useStyles();
 	const { id } = useParams();
 	socket.on('updated_badmintonScore', user => {
@@ -96,14 +110,15 @@ function BadmintonViewScore(props) {
 
 
 
-			<FormGroup style={{width:'30%'}}>
-			{/* <Typography style= {{marginTop:'5%'}} variant="h5">Winner of the match</Typography> */}
+			{showedit && (
+				<>
+				<FormGroup style={{width:'30%'}}>
             <FormControl style={{marginLeft: '6%', marginTop: '3%'}}>
                 <InputLabel  htmlFor="my-input">Winner</InputLabel>
                 <Input  onChange={(e) => onValueChange(e)} name='winner' />
             </FormControl>
 			</FormGroup>
-			{show ? (
+				{show ? (
 								<Button
 									onClick={() => editUserDetails()}
 									color="primary"
@@ -124,8 +139,10 @@ function BadmintonViewScore(props) {
 									Saved
 								</Button>
 							
-						)}
-			
+					)}
+					</>
+					)
+					}
 		</>
 	);
 }

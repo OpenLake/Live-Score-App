@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const PORT = process.env.PORT || 8080;
-const usersUrl = `http://localhost:${PORT}/users`;
+const usersUrl = "https://backendlivescore.herokuapp.com/users";
 
 export const getUsers = async id => {
 	id = id || '';
