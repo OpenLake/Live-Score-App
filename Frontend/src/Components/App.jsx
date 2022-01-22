@@ -13,15 +13,17 @@ import Login from './Login';
 
 
 function App() {
+	const [admin,setAdmin]=useState(false)
+
 	useEffect(() => {
-		if(localStorage.islogin===undefined)
+		if(localStorage.getItem("islogin")==null)
 		{
 		localStorage.setItem('islogin','')
 		}
+		if(localStorage.getItem("islogin")==="loggedin"){
+			setAdmin(true);
+		}
 	}, [])
-    const value= (localStorage.getItem('islogin')==='')? false : true;
-	
-	const [admin,setAdmin]=useState(value)
 	return (
 		<>
 		<UserContext.Provider value={{admin,setAdmin}}>
