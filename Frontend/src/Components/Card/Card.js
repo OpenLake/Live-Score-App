@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 export default function MultiActionAreaCard({ prop }) {
 	var currentDate = new Date().toISOString();
 	let toshow = currentDate < prop.date;
-	var newDate = new Date(prop.date).toLocaleDateString('en-GB');
+	var newDate = new Date(prop.date).toLocaleDateString('en-GB'); 
 
 	var current = new Date().toLocaleDateString('en-GB');
 	const showmatch = newDate === current;
