@@ -19,7 +19,7 @@ import { UserContext } from '../../../UserContext';
 import { Link } from 'react-router-dom';
 
 const PORT = process.env.PORT || 8080;
-const socket = io(`http://localhost:${PORT}8080`);
+const socket = io("https://backendlivescore.herokuapp.com/");
 
 const initialValue = {
 	title: '',

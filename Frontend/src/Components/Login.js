@@ -45,7 +45,7 @@ export default function Login() {
             <Typography variant="h4">Login</Typography>
             <FormControl>
                 <InputLabel htmlFor="my-input">Password</InputLabel>
-                <Input onChange={(e) => onValueChange(e)} name='inputpassword' />
+                <Input type='password' onChange={(e) => onValueChange(e)} name='inputpassword' autoComplete="off" />
             </FormControl>
             
             <FormControl >
