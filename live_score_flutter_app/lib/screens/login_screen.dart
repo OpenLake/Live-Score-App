@@ -92,7 +92,7 @@ class CustomTextField extends StatelessWidget {
           controller: textController,
           obscureText: hideText,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => value != null && value.length < 1
+          validator: (value) => value != null && value.isEmpty
               ? 'Enter min 1 character'
               : null,
           decoration: InputDecoration(

@@ -102,7 +102,7 @@ class CustomTextField extends StatelessWidget {
         width: 0.75 * MediaQuery.of(context).size.width,
         child: TextFormField(
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => value != null && value.length < 1
+          validator: (value) => value != null && value.isEmpty
               ? 'Enter min 1 characters'
               : null,
           controller: textController,

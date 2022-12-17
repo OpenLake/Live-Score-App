@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:live_score_flutter_app/screens/create_game_screen.dart';
 import 'package:live_score_flutter_app/screens/ongoing_games_screen.dart';
 
 class UserScreen extends StatelessWidget {
@@ -10,6 +11,12 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, CreateGameScreen.id);
+        },
+        child: const Icon(Icons.add),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
