@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:live_score_flutter_app/providers/auth_provider.dart';
+import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
 import 'package:live_score_flutter_app/screens/announcements_screen.dart';
 import 'package:live_score_flutter_app/screens/auth_screen.dart';
 import 'package:live_score_flutter_app/screens/create_game_screen.dart';
@@ -27,10 +27,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isAuth = FirebaseAuth.instance.currentUser != null;
-    
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => GamesAdminProvider())
       ],
       child: MaterialApp(
         scaffoldMessengerKey: Utils.messengerKey,
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
           SignupScreen.id: (context) => SignupScreen(),
           AnnouncementScreen.id: (context) => AnnouncementScreen(),
           UserScreen.id: (context) => UserScreen(),
-          CreateGameScreen.id:(context) => CreateGameScreen(),
-          EditGameScreen.id:(context)=>EditGameScreen(),
+          CreateGameScreen.id: (context) => CreateGameScreen(),
+          EditGameScreen.id:(context) => EditGameScreen(),
         },
       ),
     );

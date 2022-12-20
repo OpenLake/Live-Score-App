@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
   final passwordTextController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  final auth=FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -22,49 +23,48 @@ class LoginScreen extends StatelessWidget {
         body: Center(
           child: Form(
             key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomTextField(
-                  textController: emailTextController,
-                  placeholderText: "Email",
-                ),
-                CustomTextField(
-                  textController: passwordTextController,
-                  placeholderText: "Password",
-                  hideText: true,
-                ),
-                MaterialButton(
-                  height: 50,
-                  minWidth: 120,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  color: Colors.green,
-                  onPressed: () async {
-                    final isValid = formKey.currentState!.validate();
-                    if (!isValid) return;
-                    //Firebase Login will be here
-                    final authProv =
-                        Provider.of<AuthProvider>(context, listen: false);
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) => const Center(
-                              child: CircularProgressIndicator(),
-                            ));
-                    await authProv.logIn(
-                        email: emailTextController.text,
-                        password: passwordTextController.text);
-                    Navigator.pop(context);
-                    if (!authProv.error) {
-                      Navigator.pushReplacementNamed(context, UserScreen.id);
-                    }
-                  },
-                  child: const Text('Next',
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomTextField(
+                    textController: emailTextController,
+                    placeholderText: "Email",
+                  ),
+                  CustomTextField(
+                    textController: passwordTextController,
+                    placeholderText: "Password",
+                    hideText: true,
+                  ),
+                  MaterialButton(
+                    height: 50,
+                    minWidth: 120,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    color: Colors.green,
+                    onPressed: () async {
+                      final isValid = formKey.currentState!.validate();
+                      if (!isValid) return;
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                                child: CircularProgressIndicator(),
+                              ));
+                      await AuthProvider.logIn(
+                          email: emailTextController.text,
+                          password: passwordTextController.text);
+                      Navigator.pop(context);
+                      if (auth.currentUser!=null) {
+                        Navigator.pushReplacementNamed(context, UserScreen.id);
+                      }
+                    },
+                    child: const Text('Next',
+                        style: TextStyle(color: Colors.white, fontSize: 22)),
+                  )
+                ],
+              ),
             ),
           ),
         ));

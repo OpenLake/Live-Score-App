@@ -24,59 +24,60 @@ class SignupScreen extends StatelessWidget {
         body: Center(
           child: Form(
             key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomTextField(
-                  textController: nameTextController,
-                  placeholderText: "Name",
-                ),
-                CustomTextField(
-                  textController: collegeNameTextController,
-                  placeholderText: "College Name",
-                ),
-                CustomTextField(
-                  textController: emailTextController,
-                  placeholderText: "Email",
-                ),
-                CustomTextField(
-                  textController: passwordTextController,
-                  placeholderText: "Password",
-                  hideText: true,
-                ),
-                MaterialButton(
-                  height: 50,
-                  minWidth: 120,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  color: Colors.green,
-                  onPressed: () async {
-                    final valid = formKey.currentState!.validate();
-                    if (!valid) return;
-                    //Firebase Signup will take place here
-                    final authProv =
-                        Provider.of<AuthProvider>(context, listen: false);
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) => const Center(
-                              child: CircularProgressIndicator(),
-                            ));
-                    await authProv.signUp(
-                        email: emailTextController.text,
-                        password: passwordTextController.text,
-                        name: nameTextController.text,
-                        collegeName: collegeNameTextController.text);
-                    Navigator.pop(context);
-                    if (!authProv.error) {
-                      Navigator.pushReplacementNamed(context, UserScreen.id);
-                    }
-                  },
-                  child: const Text('Next',
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomTextField(
+                    textController: nameTextController,
+                    placeholderText: "Name",
+                  ),
+                  CustomTextField(
+                    textController: collegeNameTextController,
+                    placeholderText: "College Name",
+                  ),
+                  CustomTextField(
+                    textController: emailTextController,
+                    placeholderText: "Email",
+                  ),
+                  CustomTextField(
+                    textController: passwordTextController,
+                    placeholderText: "Password",
+                    hideText: true,
+                  ),
+                  MaterialButton(
+                    height: 50,
+                    minWidth: 120,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    color: Colors.green,
+                    onPressed: () async {
+                      final valid = formKey.currentState!.validate();
+                      if (!valid) return;
+                      //Firebase Signup will take place here
+                      
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                                child: CircularProgressIndicator(),
+                              ));
+                      await AuthProvider.signUp(
+                          email: emailTextController.text,
+                          password: passwordTextController.text,
+                          name: nameTextController.text,
+                          collegeName: collegeNameTextController.text);
+                      Navigator.pop(context);
+                      if (auth.currentUser!=null) {
+                        Navigator.pushReplacementNamed(context, UserScreen.id);
+                      }
+                    },
+                    child: const Text('Next',
+                        style: TextStyle(color: Colors.white, fontSize: 22)),
+                  )
+                ],
+              ),
             ),
           ),
         ));

@@ -55,6 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1066179756198',
     projectId: 'live-score-flutter',
     authDomain: 'live-score-flutter.firebaseapp.com',
+    databaseURL: 'https://live-score-flutter-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'live-score-flutter.appspot.com',
   );
 
@@ -63,6 +64,7 @@ class DefaultFirebaseOptions {
     appId: '1:1066179756198:android:b4db73e67c0a579ce3b467',
     messagingSenderId: '1066179756198',
     projectId: 'live-score-flutter',
+    databaseURL: 'https://live-score-flutter-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'live-score-flutter.appspot.com',
   );
 }

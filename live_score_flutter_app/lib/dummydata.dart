@@ -2,24 +2,30 @@ import 'package:live_score_flutter_app/models/game.dart';
 
 List<Game> gamesList = [
   Game(
+    creator:'Faiz',
+    college:'IET',
     gameType: 'Football ⚽',
-    nameTeam1: 'CSE Giants',
-    nameTeam2: 'ECE Guys',
-    scoreTeam1: '2',
-    scoreTeam2: '4',
+    team1: 'CSE Giants',
+    team2: 'ECE Guys',
+    score1: 2,
+    score2: 4,
   ),
   Game(
+    creator:'Faiz',
+    college:'IET',
     gameType: 'Football ⚽',
-    nameTeam1: 'EE Army',
-    nameTeam2: 'Mech Kickers',
-    scoreTeam1: '1',
-    scoreTeam2: '3',
+    team1: 'EE Army',
+    team2: 'Mech Kickers',
+    score1: 1,
+    score2: 3,
   ),
   Game(
+    creator:'Faiz',
+    college:'IET',
     gameType: 'Football ⚽',
-    nameTeam1: 'EE Army',
-    nameTeam2: 'Mech Kickers',
-    scoreTeam1: '1',
-    scoreTeam2: '3',
+    team1: 'EE Army',
+    team2: 'Mech Kickers',
+    score1: 1,
+    score2: 3,
   )
 ];
