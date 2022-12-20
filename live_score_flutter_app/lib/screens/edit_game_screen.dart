@@ -9,10 +9,12 @@ import '../models/game.dart';
 
 class EditGameScreen extends StatelessWidget {
   static const id = 'editgame';
+  late Game currentGame;
+  
 
   @override
   Widget build(BuildContext context) {
-    Game currentGame = Provider.of<GamesAdminProvider>(context).currentGame;
+     currentGame= Provider.of<GamesAdminProvider>(context).currentGame;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -33,9 +35,11 @@ class EditGameScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () async {
-                      await Provider.of<GamesAdminProvider>(context,
-                              listen: false)
-                          .endGame(context);
+                      showDialog(
+                          context: context,
+                          builder: (context) =>
+                              EndGameDialogBox(currentGame: currentGame));
+
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -71,6 +75,42 @@ class EditGameScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class EndGameDialogBox extends StatelessWidget {
+  Game currentGame;
+  EndGameDialogBox({required this.currentGame});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: DropdownButton(
+          value: Provider.of<GamesAdminProvider>(context).currentGameWinner,
+          onChanged: (value) =>
+              Provider.of<GamesAdminProvider>(context, listen: false)
+                  .setCurrentGameWinner(value ?? 'Draw'),
+          items: [
+            DropdownMenuItem(
+                value: currentGame.team1, child: Text(currentGame.team1)),
+            DropdownMenuItem(
+                value: currentGame.team2, child: Text(currentGame.team2)),
+            const DropdownMenuItem(value: "Draw", child: Text('Draw'))
+          ]),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('No')),
+        TextButton(
+            onPressed: () async {
+              await Provider.of<GamesAdminProvider>(context, listen: false)
+                  .endGame(context);
+            },
+            child: const Text('End Game'))
+      ],
     );
   }
 }
