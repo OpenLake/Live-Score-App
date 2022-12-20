@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,27 +30,17 @@ class GamesAdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get currentGameWinner {
-    return _currentGameWinner;
-  }
-
-  void setCurrentGameWinner(String winner) {
-    _currentGameWinner = winner;
-    notifyListeners();
-  }
-
   Future<List<Game>> get getAdminGames async {
     List<Game> gamesAdminList = [];
     try {
       final currentUser = await AuthProvider.currentUser;
-      final snapshots = (await _dbOngoingGamesRT
-              .orderByChild('creator')
-              .equalTo(currentUser?.email)
-              .get())
-          .value as Map<String, dynamic>?;
-
-      if (snapshots != null) {
-        gamesAdminList = snapshots.values.map((e) {
+      final snapshots = await _dbOngoingGamesRT
+          .orderByChild('creator')
+          .equalTo(currentUser?.email)
+          .get();
+      if (snapshots.exists) {
+        Map<dynamic, dynamic> result = snapshots.value as Map<dynamic, dynamic>;
+        gamesAdminList = result.values.map((e) {
           return Game.fromJson(e);
         }).toList();
       }
@@ -62,15 +54,15 @@ class GamesAdminProvider extends ChangeNotifier {
 
   Future<void> addGame(
       String team1, String team2, String description, String gameType) async {
-    final currentUser = await AuthProvider.currentUser;
-    Game game = Game(
-        creator: currentUser!.email,
-        college: currentUser.collegeName,
-        description: description,
-        gameType: gameType,
-        team1: team1,
-        team2: team2);
     try {
+      final currentUser = await AuthProvider.currentUser;
+      Game game = Game(
+          creator: currentUser!.email,
+          college: currentUser.collegeName,
+          description: description,
+          gameType: gameType,
+          team1: team1,
+          team2: team2);
       final myDoc = _dbOngoingGamesRT.push();
       await myDoc.set(game.toJson(myDoc.key!));
     } catch (e) {
@@ -105,20 +97,20 @@ class GamesAdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> endGame(context) async {
+  Future<void> endGame(String winner) async {
     try {
       final snapshots = (await _dbOngoingGamesRT
-              .orderByChild('id')
-              .equalTo(_currentGame.id)
-              .get())
-          .value as Map<String, dynamic>;
-      Map<String, dynamic> myGame =
-          snapshots.values.elementAt(0) as Map<String, dynamic>;
+          .orderByChild('id')
+          .equalTo(_currentGame.id)
+          .get());
+      Map<dynamic, dynamic> result = snapshots.value as Map<dynamic, dynamic>;
+      Map<dynamic, dynamic> myGame = result.values.elementAt(0);
       final mydoc = _db.doc();
       myGame['id'] = mydoc.id;
-      await mydoc.set(myGame);
-      await _dbOngoingGamesRT.child(snapshots.keys.elementAt(0)).remove();
-      Navigator.pushNamed(context, UserScreen.id);
+      myGame['winner'] = winner;
+      Map<String, dynamic> mG = Map<String, dynamic>.from(myGame);
+      await mydoc.set(mG);
+      await _dbOngoingGamesRT.child(result.keys.elementAt(0)).remove();
     } catch (e) {
       print(e);
       Utils.showSnackbar('Something went wrong');

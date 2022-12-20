@@ -41,7 +41,7 @@ class Game {
     };
   }
 
-  static Game fromJson(Map<String, dynamic> jsonData) {
+  static Game fromJson(Map<dynamic,dynamic> jsonData) {
     return Game(
         id: jsonData['id'],
         creator: jsonData['creator'],

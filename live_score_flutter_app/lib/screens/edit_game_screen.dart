@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
 import 'package:live_score_flutter_app/screens/user_screen.dart';
@@ -9,12 +7,10 @@ import '../models/game.dart';
 
 class EditGameScreen extends StatelessWidget {
   static const id = 'editgame';
-  late Game currentGame;
-  
 
   @override
   Widget build(BuildContext context) {
-     currentGame= Provider.of<GamesAdminProvider>(context).currentGame;
+    currentGame= Provider.of<GamesAdminProvider>(context,listen: false).currentGame;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -79,23 +75,32 @@ class EditGameScreen extends StatelessWidget {
   }
 }
 
-class EndGameDialogBox extends StatelessWidget {
+
+late Game currentGame;
+class EndGameDialogBox extends StatefulWidget {
   Game currentGame;
   EndGameDialogBox({required this.currentGame});
 
   @override
+  State<EndGameDialogBox> createState() => _EndGameDialogBoxState();
+}
+
+class _EndGameDialogBoxState extends State<EndGameDialogBox> {
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: DropdownButton(
-          value: Provider.of<GamesAdminProvider>(context).currentGameWinner,
-          onChanged: (value) =>
-              Provider.of<GamesAdminProvider>(context, listen: false)
-                  .setCurrentGameWinner(value ?? 'Draw'),
+          value: currentGame.winner,
+          onChanged: (value){
+            setState(() {
+              currentGame.winner=value??'Draw';
+            });
+          },
           items: [
             DropdownMenuItem(
-                value: currentGame.team1, child: Text(currentGame.team1)),
+                value: widget.currentGame.team1, child: Text(widget.currentGame.team1)),
             DropdownMenuItem(
-                value: currentGame.team2, child: Text(currentGame.team2)),
+                value: widget.currentGame.team2, child: Text(widget.currentGame.team2)),
             const DropdownMenuItem(value: "Draw", child: Text('Draw'))
           ]),
       actions: [
@@ -107,7 +112,8 @@ class EndGameDialogBox extends StatelessWidget {
         TextButton(
             onPressed: () async {
               await Provider.of<GamesAdminProvider>(context, listen: false)
-                  .endGame(context);
+                  .endGame(currentGame.winner);
+              Navigator.pushNamed(context, UserScreen.id);    
             },
             child: const Text('End Game'))
       ],

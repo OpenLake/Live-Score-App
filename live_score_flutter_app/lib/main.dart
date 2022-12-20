@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           AnnouncementScreen.id: (context) => AnnouncementScreen(),
           UserScreen.id: (context) => UserScreen(),
           CreateGameScreen.id: (context) => CreateGameScreen(),
-          EditGameScreen.id:(context) => EditGameScreen(),
+          EditGameScreen.id: (context) => EditGameScreen(),
         },
       ),
     );
