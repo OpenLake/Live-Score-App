@@ -5,17 +5,35 @@ import 'package:live_score_flutter_app/screens/user_screen.dart';
 import 'package:live_score_flutter_app/utils.dart';
 import 'package:provider/provider.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   static const id = 'signupscreen';
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   TextEditingController nameTextController = TextEditingController();
+
   TextEditingController emailTextController = TextEditingController();
+
   TextEditingController passwordTextController = TextEditingController();
+
   TextEditingController collegeNameTextController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    nameTextController.dispose();
+    emailTextController.dispose();
+    passwordTextController.dispose();
+    collegeNameTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +74,7 @@ class SignupScreen extends StatelessWidget {
                       final valid = formKey.currentState!.validate();
                       if (!valid) return;
                       //Firebase Signup will take place here
-                      
+
                       showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -69,7 +87,7 @@ class SignupScreen extends StatelessWidget {
                           name: nameTextController.text,
                           collegeName: collegeNameTextController.text);
                       Navigator.pop(context);
-                      if (auth.currentUser!=null) {
+                      if (auth.currentUser != null) {
                         Navigator.pushReplacementNamed(context, UserScreen.id);
                       }
                     },
@@ -103,9 +121,8 @@ class CustomTextField extends StatelessWidget {
         width: 0.75 * MediaQuery.of(context).size.width,
         child: TextFormField(
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => value != null && value.isEmpty
-              ? 'Enter min 1 characters'
-              : null,
+          validator: (value) =>
+              value != null && value.isEmpty ? 'Enter min 1 characters' : null,
           controller: textController,
           obscureText: hideText,
           decoration: InputDecoration(

@@ -6,15 +6,32 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const id = 'loginscreen';
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final nameTextController = TextEditingController();
+
   final emailTextController = TextEditingController();
+
   final passwordTextController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  final auth=FirebaseAuth.instance;
+
+  final auth = FirebaseAuth.instance;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    nameTextController.dispose();
+    emailTextController.dispose();
+    passwordTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                           email: emailTextController.text,
                           password: passwordTextController.text);
                       Navigator.pop(context);
-                      if (auth.currentUser!=null) {
+                      if (auth.currentUser != null) {
                         Navigator.pushReplacementNamed(context, UserScreen.id);
                       }
                     },
@@ -92,9 +109,8 @@ class CustomTextField extends StatelessWidget {
           controller: textController,
           obscureText: hideText,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => value != null && value.isEmpty
-              ? 'Enter min 1 character'
-              : null,
+          validator: (value) =>
+              value != null && value.isEmpty ? 'Enter min 1 character' : null,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             labelText: placeholderText,

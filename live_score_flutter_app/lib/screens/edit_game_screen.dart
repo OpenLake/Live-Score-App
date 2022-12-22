@@ -1,16 +1,34 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
 import 'package:live_score_flutter_app/screens/user_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../models/game.dart';
 
-class EditGameScreen extends StatelessWidget {
+late Game currentGame;
+
+class EditGameScreen extends StatefulWidget {
   static const id = 'editgame';
 
   @override
+  State<EditGameScreen> createState() => _EditGameScreenState();
+}
+
+class _EditGameScreenState extends State<EditGameScreen> {
+  final keyMomentsTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    keyMomentsTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    currentGame= Provider.of<GamesAdminProvider>(context,listen: false).currentGame;
+    currentGame =
+        Provider.of<GamesAdminProvider>(context, listen: false).currentGame;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -35,7 +53,6 @@ class EditGameScreen extends StatelessWidget {
                           context: context,
                           builder: (context) =>
                               EndGameDialogBox(currentGame: currentGame));
-
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -57,14 +74,22 @@ class EditGameScreen extends StatelessWidget {
                 isScore1: false,
               ),
               const SizedBox(height: 10.0),
-              const TextField(
+              TextField(
+                controller: keyMomentsTextController,
                 decoration: InputDecoration(
                   hintText: "Key moments",
                   fillColor: Colors.red,
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
-                  suffixIcon: Icon(Icons.send),
+                  suffixIcon: IconButton(
+                      onPressed: () async {
+                        await Provider.of<GamesAdminProvider>(context,
+                                listen: false)
+                            .sendKeyMoments(keyMomentsTextController.text);
+                        keyMomentsTextController.clear();
+                      },
+                      icon: const Icon(Icons.send)),
                 ),
               ),
             ],
@@ -75,8 +100,6 @@ class EditGameScreen extends StatelessWidget {
   }
 }
 
-
-late Game currentGame;
 class EndGameDialogBox extends StatefulWidget {
   Game currentGame;
   EndGameDialogBox({required this.currentGame});
@@ -86,38 +109,50 @@ class EndGameDialogBox extends StatefulWidget {
 }
 
 class _EndGameDialogBoxState extends State<EndGameDialogBox> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: DropdownButton(
-          value: currentGame.winner,
-          onChanged: (value){
-            setState(() {
-              currentGame.winner=value??'Draw';
-            });
-          },
-          items: [
-            DropdownMenuItem(
-                value: widget.currentGame.team1, child: Text(widget.currentGame.team1)),
-            DropdownMenuItem(
-                value: widget.currentGame.team2, child: Text(widget.currentGame.team2)),
-            const DropdownMenuItem(value: "Draw", child: Text('Draw'))
-          ]),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('No')),
-        TextButton(
-            onPressed: () async {
-              await Provider.of<GamesAdminProvider>(context, listen: false)
-                  .endGame(currentGame.winner);
-              Navigator.pushNamed(context, UserScreen.id);    
-            },
-            child: const Text('End Game'))
-      ],
-    );
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : AlertDialog(
+            title: DropdownButton(
+                value: currentGame.winner,
+                onChanged: (value) {
+                  setState(() {
+                    currentGame.winner = value ?? 'Draw';
+                  });
+                },
+                items: [
+                  DropdownMenuItem(
+                      value: widget.currentGame.team1,
+                      child: Text(widget.currentGame.team1)),
+                  DropdownMenuItem(
+                      value: widget.currentGame.team2,
+                      child: Text(widget.currentGame.team2)),
+                  const DropdownMenuItem(value: "Draw", child: Text('Draw'))
+                ]),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('No')),
+              TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await Provider.of<GamesAdminProvider>(context,
+                            listen: false)
+                        .endGame(currentGame.winner);
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Navigator.pushNamed(context, UserScreen.id);
+                  },
+                  child: const Text('End Game'))
+            ],
+          );
   }
 }
 

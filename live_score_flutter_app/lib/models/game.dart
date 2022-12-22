@@ -1,6 +1,7 @@
 class Game {
   String id;
   String creator;
+  String creatorName;
   String college;
   String gameType;
   String team1;
@@ -10,18 +11,21 @@ class Game {
   String winner;
   String description;
   List<dynamic> keyMoments;
+  String createdOn;
 
   Game(
-      {required this.creator,
-      required this.college,
-      required this.gameType,
-      required this.team1,
-      required this.team2,
+      {this.creator = '',
+      this.creatorName='',
+      this.college = '',
+      this.gameType = '',
+      this.team1 = '',
+      this.team2 = '',
       this.score1 = 0,
       this.score2 = 0,
       this.id = '',
       this.winner = 'Draw',
       this.description = '',
+      this.createdOn = '26-05-2003',
       this.keyMoments = const ['Game Started']});
 
   Map<String, dynamic> toJson(String Id) {
@@ -29,6 +33,7 @@ class Game {
     return {
       'id': id,
       'creator': creator,
+      'creatorName':creatorName,
       'college': college,
       'gameType': gameType,
       'team1': team1,
@@ -36,15 +41,17 @@ class Game {
       'score1': score1,
       'score2': score2,
       'description': description,
+      'createdOn': createdOn,
       'winner': winner,
       'keyMoments': keyMoments,
     };
   }
 
-  static Game fromJson(Map<dynamic,dynamic> jsonData) {
+  static Game fromJson(Map<dynamic, dynamic> jsonData) {
     return Game(
         id: jsonData['id'],
         creator: jsonData['creator'],
+        creatorName:jsonData['creatorName'],
         college: jsonData['college'],
         description: jsonData['description'],
         score1: jsonData['score1'],
@@ -52,6 +59,7 @@ class Game {
         gameType: jsonData['gameType'],
         team1: jsonData['team1'],
         team2: jsonData['team2'],
+        createdOn: jsonData['createdOn'],
         keyMoments: jsonData['keyMoments'],
         winner: jsonData['winner']);
   }

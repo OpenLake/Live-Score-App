@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
+import 'package:live_score_flutter_app/providers/games_users_provider.dart';
 import 'package:live_score_flutter_app/screens/announcements_screen.dart';
 import 'package:live_score_flutter_app/screens/auth_screen.dart';
 import 'package:live_score_flutter_app/screens/create_game_screen.dart';
 import 'package:live_score_flutter_app/screens/edit_game_screen.dart';
 import 'package:live_score_flutter_app/screens/login_screen.dart';
 import 'package:live_score_flutter_app/screens/ongoing_games_screen.dart';
+import 'package:live_score_flutter_app/screens/previous_games_screen.dart';
 import 'package:live_score_flutter_app/screens/signup_screen.dart';
 import 'package:live_score_flutter_app/screens/user_screen.dart';
 import 'package:live_score_flutter_app/utils.dart';
@@ -30,7 +32,8 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => GamesAdminProvider())
+        ChangeNotifierProvider(create: (context) => GamesAdminProvider()),
+        ChangeNotifierProvider(create: (context) => GameUsersProvider())
       ],
       child: MaterialApp(
         scaffoldMessengerKey: Utils.messengerKey,
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
           UserScreen.id: (context) => UserScreen(),
           CreateGameScreen.id: (context) => CreateGameScreen(),
           EditGameScreen.id: (context) => EditGameScreen(),
+          PreviousGamesScreen.id:(context) => PreviousGamesScreen(),
         },
       ),
     );

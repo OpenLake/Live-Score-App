@@ -19,7 +19,6 @@ class GamesAdminProvider extends ChangeNotifier {
       gameType: 'None',
       team1: 'None',
       team2: 'None');
-  String _currentGameWinner = 'Draw';
 
   Game get currentGame {
     return _currentGame;
@@ -47,7 +46,7 @@ class GamesAdminProvider extends ChangeNotifier {
       return gamesAdminList;
     } catch (e) {
       print(e);
-      Utils.showSnackbar('Something Went Wrong');
+      Utils.showSnackbar('Something Went Wrong while fetching games');
       return [];
     }
   }
@@ -58,16 +57,18 @@ class GamesAdminProvider extends ChangeNotifier {
       final currentUser = await AuthProvider.currentUser;
       Game game = Game(
           creator: currentUser!.email,
+          creatorName: currentUser.name,
           college: currentUser.collegeName,
           description: description,
           gameType: gameType,
           team1: team1,
-          team2: team2);
+          team2: team2,
+          createdOn: DateTime.now().toString());
       final myDoc = _dbOngoingGamesRT.push();
       await myDoc.set(game.toJson(myDoc.key!));
     } catch (e) {
       print(e);
-      Utils.showSnackbar('Something went wrong');
+      Utils.showSnackbar('Something went wrong while creating game');
     }
   }
 
@@ -97,6 +98,25 @@ class GamesAdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> sendKeyMoments(String message) async {
+    try {
+      List<dynamic> keyMomentsList =
+          ((await _dbOngoingGamesRT.child('${currentGame.id}/keyMoments').get())
+                  .value as List<dynamic>)
+              .toList();
+
+      keyMomentsList.add(message);
+      await _dbOngoingGamesRT
+          .child('${currentGame.id}/keyMoments')
+          .set(keyMomentsList);
+      // _currentGame.keyMoments.add(message);
+      // notifyListeners();
+    } catch (e) {
+      print(e);
+      Utils.showSnackbar('Something went wrong while sending key moments');
+    }
+  }
+
   Future<void> endGame(String winner) async {
     try {
       final snapshots = (await _dbOngoingGamesRT
@@ -113,7 +133,7 @@ class GamesAdminProvider extends ChangeNotifier {
       await _dbOngoingGamesRT.child(result.keys.elementAt(0)).remove();
     } catch (e) {
       print(e);
-      Utils.showSnackbar('Something went wrong');
+      Utils.showSnackbar('Something went wrong while ending game');
     }
   }
 }
