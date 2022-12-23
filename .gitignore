@@ -21,3 +21,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+./live_score_flutter_app/lib/firebase_options.dart
+./live_score_flutter_app/android/app/src/google-services.json

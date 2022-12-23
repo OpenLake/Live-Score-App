@@ -26,6 +26,8 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size=MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -48,7 +50,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: SizedBox(
-                    width: 0.75 * MediaQuery.of(context).size.width,
+                    width: 0.75 * size.width,
                     child: TextFormField(
                       controller: descriptionTextController,
                       maxLines: 5,

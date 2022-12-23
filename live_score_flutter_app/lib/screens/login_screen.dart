@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: passwordTextController.text);
                       Navigator.pop(context);
                       if (auth.currentUser != null) {
-                        Navigator.pushReplacementNamed(context, UserScreen.id);
+                        Navigator.pushNamedAndRemoveUntil(context, UserScreen.id,(Route<dynamic> route) => false,);
                       }
                     },
                     child: const Text('Next',
@@ -101,10 +101,12 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size=MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
-        width: 0.75 * MediaQuery.of(context).size.width,
+        width: 0.75 * size.width,
         child: TextFormField(
           controller: textController,
           obscureText: hideText,

@@ -40,7 +40,7 @@ class UserScreen extends StatelessWidget {
                     onPressed: () async {
                       try {
                         await AuthProvider.logout();
-                        Navigator.pushNamed(context, OngoingGamesScreen.id);
+                        Navigator.pushNamedAndRemoveUntil(context, OngoingGamesScreen.id,(Route<dynamic> route) => false,);
                       } catch (e) {
                         print(e);
                       }

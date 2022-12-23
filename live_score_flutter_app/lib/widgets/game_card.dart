@@ -11,6 +11,8 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size=MediaQuery.of(context).size;
+    
     return GestureDetector(
       onTap: onPressed,
       behavior: HitTestBehavior.opaque,
@@ -18,7 +20,7 @@ class GameCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 16),
         height: 210,
         decoration: const BoxDecoration(color: Color.fromARGB(124, 158, 158, 158)),
-        width: MediaQuery.of(context).size.width,
+        width: size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center, children: [
