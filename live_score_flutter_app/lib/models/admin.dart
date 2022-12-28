@@ -1,5 +1,3 @@
-import 'dart:html';
-
 class Admin {
   String name;
   String email;
@@ -7,11 +5,18 @@ class Admin {
 
   Admin({required this.name, required this.email, required this.collegeName});
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'email': email,
       'collegeName': collegeName,
     };
+  }
+
+  static Admin fromJson(Map<String, dynamic> jsonData) {
+    return Admin(
+        name: jsonData['name'],
+        email: jsonData['email'],
+        collegeName: jsonData['collegeName']);
   }
 }

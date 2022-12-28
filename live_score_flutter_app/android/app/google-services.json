@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1066179756198",
+    "firebase_url": "https://live-score-flutter-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "live-score-flutter",
     "storage_bucket": "live-score-flutter.appspot.com"
   },

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/screens/announcements_screen.dart';
 import 'package:live_score_flutter_app/screens/auth_screen.dart';
+import 'package:live_score_flutter_app/screens/previous_games_screen.dart';
+
+import '../screens/ongoing_games_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -17,11 +20,21 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text('Previous Games'),
-          onTap: () {},
+          title: const Text('Ongoing Games'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, OngoingGamesScreen.id);
+          },
         ),
         ListTile(
-          title: Text('Announcements'),
+          title: const Text('Previous Games'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, PreviousGamesScreen.id);
+          },
+        ),
+        ListTile(
+          title: const Text('Announcements'),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushNamed(context, AnnouncementScreen.id);
