@@ -53,7 +53,7 @@ migrate_working_dir/
 .dart_tool/
 
 /google-services.json
-.env
+**/.env
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
