@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
 import 'package:live_score_flutter_app/screens/edit_game_screen.dart';
-import 'package:live_score_flutter_app/screens/user_screen.dart';
+import 'package:live_score_flutter_app/screens/admin_screen.dart';
 import 'package:provider/provider.dart';
 
 class CreateGameScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size=MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(),
@@ -111,7 +111,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                         descriptionTextController.text,
                         selectedItem);
                     Navigator.of(context).pop();
-                    Navigator.pushNamed(context, UserScreen.id);
+                    Navigator.pushNamed(context, AdminScreen.id);
                   },
                   child: const Text('Next',
                       style: TextStyle(color: Colors.white, fontSize: 22)),

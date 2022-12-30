@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:live_score_flutter_app/screens/user_screen.dart';
+import 'package:live_score_flutter_app/screens/admin_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -74,7 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: passwordTextController.text);
                       Navigator.pop(context);
                       if (auth.currentUser != null) {
-                        Navigator.pushNamedAndRemoveUntil(context, UserScreen.id,(Route<dynamic> route) => false,);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AdminScreen.id,
+                          (Route<dynamic> route) => false,
+                        );
                       }
                     },
                     child: const Text('Next',
@@ -101,7 +105,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size=MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

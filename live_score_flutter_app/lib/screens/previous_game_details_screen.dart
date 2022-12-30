@@ -1,52 +1,63 @@
 import 'package:flutter/material.dart';
 import '../models/game.dart';
 
-class PreviousGameDetailsScreen extends StatelessWidget {
+class PreviousGameDetailsScreen extends StatefulWidget {
   Game game;
   PreviousGameDetailsScreen({required this.game});
 
+  @override
+  State<PreviousGameDetailsScreen> createState() => _PreviousGameDetailsScreenState();
+}
 
+class _PreviousGameDetailsScreenState extends State<PreviousGameDetailsScreen> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.symmetric(vertical: 16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              game.gameType,
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(game.team1),
-                    const SizedBox(height: 20),
-                    Text(game.score1.toString())
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(game.team2),
-                    const SizedBox(height: 20),
-                    Text(game.score2.toString())
-                  ],
-                )
-              ],
+                    Text(
+                      widget.game.gameType,
+                      style: const TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Text(widget.game.team1),
+                            const SizedBox(height: 20),
+                            Text(widget.game.score1.toString())
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(widget.game.team2),
+                            const SizedBox(height: 20),
+                            Text(widget.game.score2.toString())
+                          ],
+                        )
+                      ],
+                    ),
+                  ]),
             ),
             const SizedBox(
               height: 8,
             ),
             Expanded(
               child: ListView(
-                  children: game.keyMoments.reversed
+                  children: widget.game.keyMoments.reversed
                       .map((e) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: ListTile(
@@ -61,7 +72,7 @@ class PreviousGameDetailsScreen extends StatelessWidget {
                           ))
                       .toList()),
             )
-          ]),
+          ],
         ));
   }
 }

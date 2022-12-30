@@ -16,28 +16,28 @@ class AppDrawer extends StatelessWidget {
           title: const Text('Login/Signup'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushNamed(context, AuthScreen.id);
+            Navigator.pushReplacementNamed(context, AuthScreen.id);
           },
         ),
         ListTile(
           title: const Text('Ongoing Games'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushNamed(context, OngoingGamesScreen.id);
+            Navigator.pushReplacementNamed(context, OngoingGamesScreen.id);
           },
         ),
         ListTile(
           title: const Text('Previous Games'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushNamed(context, PreviousGamesScreen.id);
+            Navigator.pushReplacementNamed(context, PreviousGamesScreen.id);
           },
         ),
         ListTile(
           title: const Text('Announcements'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushNamed(context, AnnouncementScreen.id);
+            Navigator.pushReplacementNamed(context, AnnouncementScreen.id);
           },
         )
       ]),

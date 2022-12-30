@@ -2,7 +2,7 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/games_admin_provider.dart';
-import 'package:live_score_flutter_app/screens/user_screen.dart';
+import 'package:live_score_flutter_app/screens/admin_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/game.dart';
 
@@ -148,7 +148,7 @@ class _EndGameDialogBoxState extends State<EndGameDialogBox> {
                     setState(() {
                       isLoading = false;
                     });
-                    Navigator.pushNamed(context, UserScreen.id);
+                    Navigator.pushNamed(context, AdminScreen.id);
                   },
                   child: const Text('End Game'))
             ],

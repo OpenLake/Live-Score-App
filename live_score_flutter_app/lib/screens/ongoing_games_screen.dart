@@ -19,24 +19,75 @@ class OngoingGamesScreen extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical:32.0),
+        padding: const EdgeInsets.symmetric(vertical: 32.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              SizedBox(
+            children: [
+              const SizedBox(
                 height: 10,
               ),
-              Text(
-                'Ongoing Games',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Ongoing Games',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                  ),
+                  CollegeDropdown(),
+                ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
-              OngoingGamesListWidget(),
+              const OngoingGamesListWidget(),
             ]),
       ),
     );
+  }
+}
+
+String selectedCollege = 'All';
+
+class CollegeDropdown extends StatefulWidget {
+  @override
+  State<CollegeDropdown> createState() => _CollegeDropdownState();
+}
+
+class _CollegeDropdownState extends State<CollegeDropdown> {
+  List<String> collegeList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Object>(
+        future: Provider.of<GameUsersProvider>(context, listen: false)
+            .getAllCollegesOngoing(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            collegeList = snapshot.data as List<String>;
+            return DropdownButton(
+              value: Provider.of<GameUsersProvider>(context, listen: false).getSelectedCollegeOngoing,
+              items: ['All', ...collegeList]
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (value) {
+                selectedCollege = value ?? 'All';
+
+                Provider.of<GameUsersProvider>(context, listen: false)
+                    .setSelectedCollegeOngoing(selectedCollege);
+                setState(() {});
+              });
+          }
+          else{
+            return DropdownButton(
+              value: 'All',
+              items: ['All']
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (value) {
+              });
+          }
+          
+        });
   }
 }
 
@@ -48,6 +99,11 @@ class OngoingGamesListWidget extends StatelessWidget {
     return StreamBuilder(
         stream: Provider.of<GameUsersProvider>(context).getOngoingGamesStream(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+                child:
+                    Text('Something went Wrong while fetching Ongoing Games'));
+          }
           List<Game> gamesList = [];
           if (snapshot.hasData && snapshot.data != null) {
             final temp = (snapshot.data as DatabaseEvent);
@@ -68,6 +124,8 @@ class OngoingGamesListWidget extends StatelessWidget {
                 ),
               );
             }
+            gamesList.sort((a,b) => -1*a.createdOn.compareTo(b.createdOn));
+            
             return Expanded(
               child: ListView.builder(
                 itemCount: gamesList.length,

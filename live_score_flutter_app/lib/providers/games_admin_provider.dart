@@ -1,16 +1,19 @@
 import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:live_score_flutter_app/models/announcement.dart';
 import 'package:live_score_flutter_app/providers/auth_provider.dart';
 import 'package:live_score_flutter_app/utils.dart';
 import '../models/game.dart';
-import '../screens/user_screen.dart';
+import 'package:http/http.dart' as http;
 
 class GamesAdminProvider extends ChangeNotifier {
   final _db = FirebaseFirestore.instance.collection('PreviousGames/');
+  final _dbAnnouncements =
+      FirebaseFirestore.instance.collection('Announcements/');
   final _dbOngoingGamesRT = FirebaseDatabase.instance.ref("OngoingGames/");
 
   Game _currentGame = Game(
@@ -27,6 +30,46 @@ class GamesAdminProvider extends ChangeNotifier {
   void setCurrentGame(Game game) {
     _currentGame = game;
     notifyListeners();
+  }
+
+  Future<void> sendNotificationToDevices(String title, String body) async {
+    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=${dotenv.env["SERVER_KEY"]}',
+        },
+        body: jsonEncode({
+          "registration_ids": [
+            "f63uvo1ORx-dMmGaZkkO3w:APA91bH4Js6NtsmiFvEWAYHDk_1MWsKAsJYtp621i5QnHBxwnq6otIjhTH52raY4iOW4_juE--BPj2rpBVRdG1krUdR4t8YWN1JBAonQLBTVxd1RMz7FvhYypij6yLELZye67SsIt3WW"
+          ],
+          'notification': {
+            'android_channel_id': 'pushnotificationapp',
+            'title': title,
+            'body': body,
+          },
+        }));
+  }
+
+  Future<void> addAnnouncement(String message) async {
+    if (message == '') return;
+    try {
+      final myDoc = _dbAnnouncements.doc();
+      final currentAdmin = await AuthProvider.currentUser;
+      Announcement announcement = Announcement(
+        message: message,
+        createdOn: DateTime.now().toString(),
+        creator: currentAdmin?.email ?? '',
+        creatorName: currentAdmin?.name ?? '',
+        collegeName: currentAdmin?.collegeName ?? '',
+        id: myDoc.id,
+      );
+      await myDoc.set(announcement.toJson());
+      await sendNotificationToDevices('${announcement.creatorName} (${announcement.collegeName})', announcement.message);
+      Utils.showSnackbar('Your message was announced');
+    } catch (e) {
+      print(e);
+      Utils.showSnackbar('Something went wrong while announcing');
+    }
   }
 
   Future<List<Game>> get getAdminGames async {
@@ -99,6 +142,7 @@ class GamesAdminProvider extends ChangeNotifier {
   }
 
   Future<void> sendKeyMoments(String message) async {
+    if (message == '') return;
     try {
       List<dynamic> keyMomentsList =
           ((await _dbOngoingGamesRT.child('${currentGame.id}/keyMoments').get())
