@@ -16,7 +16,7 @@ class AppDrawer extends StatelessWidget {
           title: const Text('Login/Signup'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushReplacementNamed(context, AuthScreen.id);
+            Navigator.pushNamed(context, AuthScreen.id);
           },
         ),
         ListTile(
@@ -37,7 +37,7 @@ class AppDrawer extends StatelessWidget {
           title: const Text('Announcements'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushReplacementNamed(context, AnnouncementScreen.id);
+            Navigator.pushNamed(context, AnnouncementScreen.id);
           },
         )
       ]),
