@@ -32,16 +32,14 @@ class GamesAdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendNotificationToDevices(String title, String body) async {
+  Future<void> sendNotificationToDevices(String title, String body, String topic) async {
     await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'key=${dotenv.env["SERVER_KEY"]}',
         },
         body: jsonEncode({
-          "registration_ids": [
-            "f63uvo1ORx-dMmGaZkkO3w:APA91bH4Js6NtsmiFvEWAYHDk_1MWsKAsJYtp621i5QnHBxwnq6otIjhTH52raY4iOW4_juE--BPj2rpBVRdG1krUdR4t8YWN1JBAonQLBTVxd1RMz7FvhYypij6yLELZye67SsIt3WW"
-          ],
+          "condition": "'$topic' in topics || 'All' in topics",
           'notification': {
             'android_channel_id': 'pushnotificationapp',
             'title': title,
@@ -64,7 +62,7 @@ class GamesAdminProvider extends ChangeNotifier {
         id: myDoc.id,
       );
       await myDoc.set(announcement.toJson());
-      await sendNotificationToDevices('${announcement.creatorName} (${announcement.collegeName})', announcement.message);
+      await sendNotificationToDevices('${announcement.creatorName} (${announcement.collegeName})', announcement.message,announcement.collegeName.replaceAll(' ', ''));
       Utils.showSnackbar('Your message was announced');
     } catch (e) {
       print(e);

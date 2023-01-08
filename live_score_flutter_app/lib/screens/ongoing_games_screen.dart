@@ -19,12 +19,12 @@ class OngoingGamesScreen extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,7 +37,7 @@ class OngoingGamesScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                height: 25,
+                height: 5,
               ),
               const OngoingGamesListWidget(),
             ]),
