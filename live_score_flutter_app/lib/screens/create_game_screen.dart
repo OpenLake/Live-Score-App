@@ -24,7 +24,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
 
   String selectedItem = 'Football ⚽';
 
-  List<String> gamesList = ['Football ⚽', 'Cricket 🏏', 'Tennis 🎾'];
+  List<String> gamesList = ['Football ⚽', 'Cricket 🏏', 'Tennis 🎾','Other ❓'];
 
   @override
   Widget build(BuildContext context) {
