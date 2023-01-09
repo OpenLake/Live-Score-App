@@ -141,7 +141,7 @@ class OngoingGameDetailsScreen extends StatelessWidget {
                                     const EdgeInsets.symmetric(vertical: 10.0),
                                 child: ListTile(
                                   textColor: Colors.white,
-                                  tileColor: Color(0xDFEA3C3C),
+                                  tileColor: const Color(0xDFEA3C3C),
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(15.0)),

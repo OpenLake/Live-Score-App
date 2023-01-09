@@ -14,7 +14,7 @@ class AuthScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height:20.0),
-            Image.asset("assets/sports_auth.png"),
+            Hero(tag:"main-image",child: Image.asset("assets/sports_auth.png")),
             SizedBox(height:MediaQuery.of(context).size.height * 0.1),
             Column(children: [
               CustomButton(

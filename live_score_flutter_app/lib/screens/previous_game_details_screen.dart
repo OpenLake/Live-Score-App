@@ -33,11 +33,14 @@ class _PreviousGameDetailsScreenState extends State<PreviousGameDetailsScreen> {
                     style:
                         const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                   ),
-                   Text(
-              '${widget.game.winner} 🏆',
-              style:
-                  const TextStyle(color:Colors.purple,fontSize: 28, fontWeight: FontWeight.w700),
-              ),
+                  const SizedBox(width: 10.0),
+                   Expanded(
+                     child: Text(
+                                 '${widget.game.winner} 🏆',
+                                 style:
+                                     const TextStyle(color:Colors.purple,fontSize: 28, fontWeight: FontWeight.w700),
+                                 ),
+                   ),
                 ],
               ),
               const SizedBox(

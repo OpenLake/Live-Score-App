@@ -26,15 +26,18 @@ class OngoingGamesScreen extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Ongoing Games',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                  ),
-                  CollegeDropdown(),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Ongoing Games',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    ),
+                    CollegeDropdown(),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 5,

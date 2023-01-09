@@ -36,7 +36,9 @@ class AdminScreen extends StatelessWidget {
                           future: AuthProvider.currentUser,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return Text('Hello ${snapshot.data?.name}');
+                              return Text.rich(
+                                TextSpan(style:const TextStyle(color:Colors.black),children: [const TextSpan(text:"Hello, "),TextSpan(text:"${snapshot.data?.name}",style:const TextStyle(fontSize: 25.0))]),
+                              );
                             } else {
                               return const Text('Hello Loading...');
                             }

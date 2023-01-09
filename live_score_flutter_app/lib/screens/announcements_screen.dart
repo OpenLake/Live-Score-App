@@ -17,7 +17,7 @@ class AnnouncementScreen extends StatelessWidget {
         title: const Text("Announcements 🔊"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.symmetric(horizontal:12.0),
         child: FutureBuilder(
           future: Provider.of<GameUsersProvider>(context, listen: false)
               .getAnnouncements(),
@@ -117,58 +117,62 @@ class _NotificationDropdownState extends State<NotificationDropdown> {
     final dropDownNode = FocusNode();
     final myFuture =
         Provider.of<GameUsersProvider>(context, listen: false).getAllColleges();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text('Subscribe to Notification: '),
-        FutureBuilder<Map<String, bool>>(
-            future: myFuture,
-            builder: (context, snapshot) {
-              Map<String, bool> collegeMap = {'All': false};
-              if (snapshot.hasData) {
-                collegeMap = snapshot.data ?? {};
-                return DropdownButton(
-                    focusNode: dropDownNode,
-                    hint: const Text('Select Colleges'),
-                    items: collegeMap.keys
-                        .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Row(children: [
-                              Checkbox(
-                                  tristate: true,
-                                  value: collegeMap[e],
-                                  onChanged: (value) async {
-                                      Navigator.pop(dropDownNode.context!);
-                                    await Provider.of<GameUsersProvider>(
-                                            context,
-                                            listen: false)
-                                        .subscribeToCollege(value ?? false, e);
-                                        setState(() {
-                                        });
-                                  }),
-                              Text(e),
-                            ])))
-                        .toList(),
-                    onChanged: (value) {});
-              } else {
-                return DropdownButton(
-                    hint: const Text('Select College'),
-                    items: ['All']
-                        .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Row(children: [
-                              Checkbox(
-                                  value: collegeMap[e],
-                                  onChanged: (value) async {}),
-                              Text(e)
-                            ])))
-                        .toList(),
-                    onChanged: (value) {
-                      Navigator.pop(context);
-                    });
-              }
-            })
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical:7.5),
+      color:Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Subscribe to Notification: '),
+          FutureBuilder<Map<String, bool>>(
+              future: myFuture,
+              builder: (context, snapshot) {
+                Map<String, bool> collegeMap = {'All': false};
+                if (snapshot.hasData) {
+                  collegeMap = snapshot.data ?? {};
+                  return DropdownButton(
+                      focusNode: dropDownNode,
+                      hint: const Text('Select Colleges'),
+                      items: collegeMap.keys
+                          .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Row(children: [
+                                Checkbox(
+                                    tristate: true,
+                                    value: collegeMap[e],
+                                    onChanged: (value) async {
+                                        Navigator.pop(dropDownNode.context!);
+                                      await Provider.of<GameUsersProvider>(
+                                              context,
+                                              listen: false)
+                                          .subscribeToCollege(value ?? false, e);
+                                          setState(() {
+                                          });
+                                    }),
+                                Text(e),
+                              ])))
+                          .toList(),
+                      onChanged: (value) {});
+                } else {
+                  return DropdownButton(
+                      hint: const Text('Select College'),
+                      items: ['All']
+                          .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Row(children: [
+                                Checkbox(
+                                    value: collegeMap[e],
+                                    onChanged: (value) async {}),
+                                Text(e)
+                              ])))
+                          .toList(),
+                      onChanged: (value) {
+                        Navigator.pop(context);
+                      });
+                }
+              })
+        ],
+      ),
     );
   }
 }

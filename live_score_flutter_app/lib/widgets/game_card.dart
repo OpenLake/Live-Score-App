@@ -23,14 +23,14 @@ class GameCard extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        height: 210,
+        height: 230,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.0)),
           boxShadow: [
             BoxShadow(
-            color: Colors.black26,
-            blurRadius: 2.0,
-            spreadRadius: 1.0,
+              color: Colors.black26,
+              blurRadius: 2.0,
+              spreadRadius: 1.0,
             )
           ],
           color: Colors.amberAccent,
@@ -40,102 +40,108 @@ class GameCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              isAdminCard
-                  ? const SizedBox()
-                  : Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15.0)),
-                                  color: Colors.blue,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 15.0),
-                                child: Column(
-                                  children: [
-                                    Text(game.team1,
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 16)),
-                                    const SizedBox(height: 10.0),
-                                    Text(game.score1.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 25)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(15.0)),
-                                    color: Colors.green),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 15.0),
-                                child: Column(
-                                  children: [
-                                    Text(game.team2,
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 16)),
-                                    const SizedBox(height: 10.0),
-                                    Text(game.score2.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 25)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height:110,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15.0)),
+                            color: Colors.blue,
+                          ),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              horizontal: 10.0, vertical: 15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(game.college,
-                                        style: const TextStyle(
-                                            fontSize: 30.0,
-                                            fontWeight: FontWeight.w700)),
-                                    Text("Created By : ${game.creatorName}"),
-                                    const SizedBox(height: 20.0),
-                                    Text(
-                                        DateFormat('dd MMMM yyyy \nkk:mm')
-                                            .format(
-                                                DateTime.parse(game.createdOn)),
-                                        style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 10.0)),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                        game.gameType.substring(
-                                            game.gameType.length - 2),
-                                        style: const TextStyle(fontSize: 50.0)),
-                                    const SizedBox(height: 10.0),
-                                    Text(game.gameType),
-                                  ],
-                                ),
-                              ),
+                              Text.rich(
+                                 textAlign:TextAlign.center,
+                                 TextSpan(children:[TextSpan(text:game.winner == game.team1 ? "🏆 ":""),TextSpan(text: game.team1)]),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                              const SizedBox(height: 10.0),
+                              Text(game.score1.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 25)),
                             ],
                           ),
-                        )
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 110,
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(15.0)),
+                              color: Colors.green),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text.rich(
+                              textAlign:TextAlign.center,
+                              TextSpan(children:[TextSpan(text:game.winner == game.team2 ? "🏆 ":""),TextSpan(text: game.team2)]),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                              const SizedBox(height: 10.0),
+                              Text(game.score2.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 25)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(game.college,
+                                  style: const TextStyle(
+                                      fontSize: 30.0,
+                                      fontWeight: FontWeight.w700)),
+                              isAdminCard
+                                  ? const Text("")
+                                  : Text("Created By : ${game.creatorName}"),
+                              const SizedBox(height: 20.0),
+                              Text(
+                                  DateFormat('dd MMMM yyyy \nkk:mm')
+                                      .format(DateTime.parse(game.createdOn)),
+                                  style: const TextStyle(
+                                      color: Colors.black54, fontSize: 10.0)),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                  game.gameType
+                                      .substring(game.gameType.length - 2),
+                                  style: const TextStyle(fontSize: 50.0)),
+                              const SizedBox(height: 10.0),
+                              Text(game.gameType),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
+                  )
+                ],
+              ),
             ]),
       ),
     );

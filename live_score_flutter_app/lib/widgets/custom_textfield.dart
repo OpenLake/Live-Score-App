@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: SizedBox(
         width: 0.75 * size.width,
         child: TextFormField(

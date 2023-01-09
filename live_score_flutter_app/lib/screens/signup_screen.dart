@@ -54,7 +54,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 20.0),
               Form(
                 key: formKey,
                 child: Column(
