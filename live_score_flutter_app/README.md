@@ -81,4 +81,4 @@ Here is the demo video of working of this app: [Watch the Video](https://youtu.b
 
 ## Contact
 
-- [Faiz Khan](https://github.com/FaizFk/) | [LinkedIn](linkedin.com/in/faiz-khan-4793731ba/)
+- [Faiz Khan](https://github.com/FaizFk/) | [LinkedIn](https://linkedin.com/in/faiz-khan-4793731ba/)
