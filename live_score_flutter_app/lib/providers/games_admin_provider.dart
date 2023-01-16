@@ -32,7 +32,8 @@ class GamesAdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendNotificationToDevices(String title, String body, String topic) async {
+  Future<void> sendNotificationToDevices(
+      String title, String body, String topic) async {
     await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -62,7 +63,10 @@ class GamesAdminProvider extends ChangeNotifier {
         id: myDoc.id,
       );
       await myDoc.set(announcement.toJson());
-      await sendNotificationToDevices('${announcement.creatorName} (${announcement.collegeName})', announcement.message,announcement.collegeName.replaceAll(' ', ''));
+      await sendNotificationToDevices(
+          '${announcement.creatorName} (${announcement.collegeName})',
+          announcement.message,
+          announcement.collegeName.replaceAll(' ', ''));
       Utils.showSnackbar('Your message was announced');
     } catch (e) {
       print(e);
@@ -115,28 +119,32 @@ class GamesAdminProvider extends ChangeNotifier {
 
   Future<void> changeScore(
       {bool isIncrease = true, bool isScore1 = true}) async {
-    if (isScore1) {
-      if (isIncrease) {
-        await _dbOngoingGamesRT
-            .child('${currentGame.id}/score1')
-            .set(++_currentGame.score1);
+    try {
+      if (isScore1) {
+        if (isIncrease) {
+          await _dbOngoingGamesRT
+              .child('${currentGame.id}/score1')
+              .set(++_currentGame.score1);
+        } else {
+          await _dbOngoingGamesRT
+              .child('${currentGame.id}/score1')
+              .set(_currentGame.score1 > 0 ? --_currentGame.score1 : 0);
+        }
       } else {
-        await _dbOngoingGamesRT
-            .child('${currentGame.id}/score1')
-            .set(_currentGame.score1 > 0 ? --_currentGame.score1 : 0);
+        if (isIncrease) {
+          await _dbOngoingGamesRT
+              .child('${currentGame.id}/score2')
+              .set(++_currentGame.score2);
+        } else {
+          await _dbOngoingGamesRT
+              .child('${currentGame.id}/score2')
+              .set((_currentGame.score2) > 0 ? --_currentGame.score2 : 0);
+        }
       }
-    } else {
-      if (isIncrease) {
-        await _dbOngoingGamesRT
-            .child('${currentGame.id}/score2')
-            .set(++_currentGame.score2);
-      } else {
-        await _dbOngoingGamesRT
-            .child('${currentGame.id}/score2')
-            .set((_currentGame.score2) > 0 ? --_currentGame.score2 : 0);
-      }
+      notifyListeners();
+    } catch (e) {
+      Utils.showSnackbar('Please check your internet connection');
     }
-    notifyListeners();
   }
 
   Future<void> sendKeyMoments(String message) async {

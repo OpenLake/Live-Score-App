@@ -95,13 +95,17 @@ class GameUsersProvider extends ChangeNotifier {
 
   Future<List<String>> getAllCollegesOngoing() async {
     List<String> collegeList = [];
-    final snapshotGames = await _dbOngoingGamesRT.get();
-    if (snapshotGames.exists) {
-      Map<dynamic, dynamic> result =
-          snapshotGames.value as Map<dynamic, dynamic>;
-      collegeList = List<String>.from(result.values.map((e) {
-        return e['college'];
-      }).toSet());
+    try {
+      final snapshotGames = await _dbOngoingGamesRT.get();
+      if (snapshotGames.exists) {
+        Map<dynamic, dynamic> result =
+            snapshotGames.value as Map<dynamic, dynamic>;
+        collegeList = List<String>.from(result.values.map((e) {
+          return e['college'];
+        }).toSet());
+      }
+    } catch (e) {
+      Utils.showSnackbar("Something went wrong");
     }
     return collegeList;
   }
@@ -129,7 +133,7 @@ class GameUsersProvider extends ChangeNotifier {
     try {
       final pref = await SharedPreferences.getInstance();
       if (pref.getBool('All') == null) {
-       await FirebaseMessaging.instance.subscribeToTopic('All');
+        await FirebaseMessaging.instance.subscribeToTopic('All');
         await pref.setBool('All', true);
       }
     } catch (e) {

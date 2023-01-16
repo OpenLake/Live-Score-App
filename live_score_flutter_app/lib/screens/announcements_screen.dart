@@ -17,7 +17,7 @@ class AnnouncementScreen extends StatelessWidget {
         title: const Text("Announcements 🔊"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: FutureBuilder(
           future: Provider.of<GameUsersProvider>(context, listen: false)
               .getAnnouncements(),
@@ -118,8 +118,8 @@ class _NotificationDropdownState extends State<NotificationDropdown> {
     final myFuture =
         Provider.of<GameUsersProvider>(context, listen: false).getAllColleges();
     return Container(
-      padding: const EdgeInsets.symmetric(vertical:7.5),
-      color:Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 7.5),
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -141,13 +141,22 @@ class _NotificationDropdownState extends State<NotificationDropdown> {
                                     tristate: true,
                                     value: collegeMap[e],
                                     onChanged: (value) async {
-                                        Navigator.pop(dropDownNode.context!);
+                                      Navigator.pop(dropDownNode.context!);
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) => const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ));
                                       await Provider.of<GameUsersProvider>(
                                               context,
                                               listen: false)
-                                          .subscribeToCollege(value ?? false, e);
-                                          setState(() {
-                                          });
+                                          .subscribeToCollege(
+                                              value ?? false, e);
+                                      Navigator.pop(context);
+                                      setState(() {
+                                      });
                                     }),
                                 Text(e),
                               ])))
