@@ -19,7 +19,6 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'notificationservice/local_notification_service.dart';
 
-
 Future<void> backgroundHandler(RemoteMessage message) async {
   print(message.data.toString());
   print(message.notification!.title);
@@ -74,13 +73,15 @@ class _MyAppState extends State<MyApp> {
         }
       },
     );
+
+    //Subscribing to topic 'All' if first installing the app
+    GameUsersProvider.subscribeToAllIfFirstTime();
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     bool isAuth = FirebaseAuth.instance.currentUser != null;
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => GamesAdminProvider()),

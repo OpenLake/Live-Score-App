@@ -95,14 +95,76 @@ class GameUsersProvider extends ChangeNotifier {
 
   Future<List<String>> getAllCollegesOngoing() async {
     List<String> collegeList = [];
-    final snapshotGames = await _dbOngoingGamesRT.get();
-    if (snapshotGames.exists) {
-      Map<dynamic, dynamic> result =
-          snapshotGames.value as Map<dynamic, dynamic>;
-      collegeList = List<String>.from(result.values.map((e) {
-        return e['college'];
-      }).toSet());
+    try {
+      final snapshotGames = await _dbOngoingGamesRT.get();
+      if (snapshotGames.exists) {
+        Map<dynamic, dynamic> result =
+            snapshotGames.value as Map<dynamic, dynamic>;
+        collegeList = List<String>.from(result.values.map((e) {
+          return e['college'];
+        }).toSet());
+      }
+    } catch (e) {
+      Utils.showSnackbar("Something went wrong");
     }
     return collegeList;
+  }
+
+  Future<Map<String, bool>> getAllColleges() async {
+    Map<String, bool> collegeMap = {};
+    List<String> collegeList = [];
+    try {
+      final snapshotUsers = await _dbUsers.get();
+      if (snapshotUsers.size > 0) {
+        collegeList = List<String>.from(
+            snapshotUsers.docs.map((e) => e['collegeName']).toSet());
+      }
+      for (String college in ['All', ...collegeList]) {
+        collegeMap[college] = await isSubscribedToCollege(college);
+      }
+    } catch (e) {
+      print(e);
+      Utils.showSnackbar('Something went wrong, Check your network connection');
+    }
+    return collegeMap;
+  }
+
+  static Future<void> subscribeToAllIfFirstTime() async {
+    try {
+      final pref = await SharedPreferences.getInstance();
+      if (pref.getBool('All') == null) {
+        await FirebaseMessaging.instance.subscribeToTopic('All');
+        await pref.setBool('All', true);
+      }
+    } catch (e) {
+      print(e);
+      Utils.showSnackbar('something went wrong');
+    }
+  }
+
+  Future<void> subscribeToCollege(bool value, String college) async {
+    college = college.replaceAll(' ', '');
+    try {
+      final pref = await SharedPreferences.getInstance();
+      if (value) {
+        await FirebaseMessaging.instance.subscribeToTopic(college);
+        await pref.setBool(college, true);
+      } else {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(college);
+        await pref.setBool(college, false);
+      }
+    } catch (e) {
+      print(e);
+      Utils.showSnackbar(
+          "Can't subscribe to the college. Check your connection");
+    }
+  }
+
+  Future<bool> isSubscribedToCollege(String college) async {
+    college = college.replaceAll(' ', '');
+    bool isSubscribed = false;
+    final pref = await SharedPreferences.getInstance();
+    isSubscribed = pref.getBool(college) ?? false;
+    return isSubscribed;
   }
 }

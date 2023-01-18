@@ -20,7 +20,7 @@ class PreviousGamesScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -117,6 +117,7 @@ class PreviousGamesListWidget extends StatelessWidget {
               itemCount: gamesList.length,
               itemBuilder: (context, index) => GameCard(
                 game: gamesList[index],
+                isPreviousCard: true,
                 onPressed: () {
                   Navigator.push(
                     context,

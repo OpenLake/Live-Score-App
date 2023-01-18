@@ -19,25 +19,28 @@ class OngoingGamesScreen extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Ongoing Games',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                  ),
-                  CollegeDropdown(),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Ongoing Games',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    ),
+                    CollegeDropdown(),
+                  ],
+                ),
               ),
               const SizedBox(
-                height: 25,
+                height: 5,
               ),
               const OngoingGamesListWidget(),
             ]),

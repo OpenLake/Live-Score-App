@@ -9,9 +9,14 @@ import 'package:provider/provider.dart';
 import '../models/game.dart';
 import 'edit_game_screen.dart';
 
-class AdminScreen extends StatelessWidget {
+class AdminScreen extends StatefulWidget {
   static const id = 'adminscreen';
 
+  @override
+  State<AdminScreen> createState() => _AdminScreenState();
+}
+
+class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +41,17 @@ class AdminScreen extends StatelessWidget {
                           future: AuthProvider.currentUser,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return Text('Hello ${snapshot.data?.name}');
+                              return Text.rich(
+                                TextSpan(
+                                    style: const TextStyle(color: Colors.black),
+                                    children: [
+                                      const TextSpan(text: "Hello, "),
+                                      TextSpan(
+                                          text: "${snapshot.data?.name}",
+                                          style:
+                                              const TextStyle(fontSize: 25.0))
+                                    ]),
+                              );
                             } else {
                               return const Text('Hello Loading...');
                             }
@@ -84,31 +99,37 @@ class AdminScreen extends StatelessWidget {
               ),
             ),
             FutureBuilder(
-                future: Provider.of<GamesAdminProvider>(context,listen: false).getAdminGames,
+                future: Provider.of<GamesAdminProvider>(context, listen: false)
+                    .getAdminGames,
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) => GameCard(
-                          game: snapshot.data![index],
-                          isAdminCard: true,
-                          onPressed: () {
-                            Provider.of<GamesAdminProvider>(context,
-                                    listen: false)
-                                .setCurrentGame(snapshot.data![index]);
-                            Map<String, Game> args = {
-                              'game': snapshot.data![index]
-                            };
-                            Navigator.pushNamed(context, EditGameScreen.id,
-                                arguments: args);
-                          },
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      List<Game> gamesList=snapshot.data??[];
+                      gamesList.sort((a,b) => -1*a.createdOn.compareTo(b.createdOn));
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: gamesList.length,
+                          itemBuilder: (context, index) => GameCard(
+                            game: gamesList[index],
+                            isAdminCard: true,
+                            onPressed: () {
+                              Provider.of<GamesAdminProvider>(context,
+                                      listen: false)
+                                  .setCurrentGame(gamesList[index]);
+                              Map<String, Game> args = {
+                                'game': gamesList[index]
+                              };
+                              Navigator.pushNamed(context, EditGameScreen.id,
+                                  arguments: args).then((value){setState(() {
+                                    
+                                  });});
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
+                      );
+                    }
                   }
+                  return const Center(child: CircularProgressIndicator());
                 }),
           ],
         ),
@@ -130,37 +151,35 @@ class _AnnouncementDialogBoxState extends State<AnnouncementDialogBox> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-          icon: const Icon(Icons.announcement),
-            title: TextField(
-              controller: messageController,
-              autofocus: true,
-              decoration: const InputDecoration(hintText: "Enter your message"),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel')),
-              TextButton(
-                  onPressed: () async {
-                    showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                    await Provider.of<GamesAdminProvider>(context,
-                            listen: false)
-                        .addAnnouncement(messageController.text);
-                    Navigator.popUntil(context, ModalRoute.withName('adminscreen'));
-                  },
-                  child: const Text('Announce'))
-            ],
-          );
+      icon: const Icon(Icons.announcement),
+      title: TextField(
+        controller: messageController,
+        autofocus: true,
+        decoration: const InputDecoration(hintText: "Enter your message"),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel')),
+        TextButton(
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => const Center(
+                        child: CircularProgressIndicator(),
+                      ));
+              await Provider.of<GamesAdminProvider>(context, listen: false)
+                  .addAnnouncement(messageController.text);
+              Navigator.popUntil(context, ModalRoute.withName('adminscreen'));
+            },
+            child: const Text('Announce'))
+      ],
+    );
   }
 }

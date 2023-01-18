@@ -4,6 +4,8 @@ import 'package:live_score_flutter_app/screens/edit_game_screen.dart';
 import 'package:live_score_flutter_app/screens/admin_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/custom_textfield.dart';
+
 class CreateGameScreen extends StatefulWidget {
   static const id = 'creategame';
 
@@ -22,7 +24,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
 
   String selectedItem = 'Football ⚽';
 
-  List<String> gamesList = ['Football ⚽', 'Cricket 🏏', 'Tennis 🎾'];
+  List<String> gamesList = ['Football ⚽', 'Cricket 🏏', 'Tennis 🎾','Other ❓'];
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +108,10 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                       ),
                     );
                     await gamesProvider.addGame(
-                        team1TextController.text,
-                        team2TextController.text,
-                        descriptionTextController.text,
+                        team1TextController.text.toUpperCase(),
+                        team2TextController.text.toUpperCase(),
+                        descriptionTextController.text.isEmpty?descriptionTextController.text:
+                        descriptionTextController.text[0].toUpperCase()+descriptionTextController.text.substring(1),
                         selectedItem);
                     Navigator.of(context).pop();
                     Navigator.pushNamed(context, AdminScreen.id);
@@ -125,37 +128,4 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
   }
 }
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    this.hideText = false,
-    this.lines = 1,
-    required this.textController,
-    required this.placeholderText,
-  });
 
-  final bool hideText;
-  final TextEditingController textController;
-  final String placeholderText;
-  final int lines;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        width: 0.75 * MediaQuery.of(context).size.width,
-        child: TextFormField(
-          controller: textController,
-          obscureText: hideText,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) =>
-              value != null && value.isEmpty ? 'Enter min 1 character' : null,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            labelText: placeholderText,
-          ),
-        ),
-      ),
-    );
-  }
-}

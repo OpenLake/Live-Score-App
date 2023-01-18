@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:live_score_flutter_app/providers/auth_provider.dart';
 import 'package:live_score_flutter_app/screens/admin_screen.dart';
 import 'package:live_score_flutter_app/utils.dart';
+import 'package:live_score_flutter_app/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/custom_textfield.dart';
 
 class SignupScreen extends StatefulWidget {
   static const id = 'signupscreen';
@@ -39,104 +42,80 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Center(
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomTextField(
-                    textController: nameTextController,
-                    placeholderText: "Name",
-                  ),
-                  CustomTextField(
-                    textController: collegeNameTextController,
-                    placeholderText: "College Name",
-                  ),
-                  CustomTextField(
-                    textController: emailTextController,
-                    placeholderText: "Email",
-                  ),
-                  CustomTextField(
-                    textController: passwordTextController,
-                    placeholderText: "Password",
-                    hideText: true,
-                  ),
-                  MaterialButton(
-                    height: 50,
-                    minWidth: 120,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    color: Colors.green,
-                    onPressed: () async {
-                      final valid = formKey.currentState!.validate();
-                      if (!valid) return;
-                      //Firebase Signup will take place here
-
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                      await AuthProvider.signUp(
-                          email: emailTextController.text,
-                          password: passwordTextController.text,
-                          name: nameTextController.text,
-                          collegeName: collegeNameTextController.text);
-                      Navigator.pop(context);
-                      if (auth.currentUser != null) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AdminScreen.id,
-                          (Route<dynamic> route) => false,
-                        );
-                      }
-                    },
-                    child: const Text('Next',
-                        style: TextStyle(color: Colors.white, fontSize: 22)),
-                  )
-                ],
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.40,
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  "assets/signup_bg.png",
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
+              Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomTextField(
+                      textController: nameTextController,
+                      placeholderText: "Name",
+                      icon: Icons.person,
+                    ),
+                    CustomTextField(
+                      textController: collegeNameTextController,
+                      placeholderText: "College Name",
+                      icon: Icons.school,
+                    ),
+                    CustomTextField(
+                      textController: emailTextController,
+                      placeholderText: "Email",
+                      icon: Icons.email,
+                    ),
+                    CustomTextField(
+                      textController: passwordTextController,
+                      placeholderText: "Password",
+                      icon: Icons.lock,
+                      hideText: true,
+                    ),
+                    CustomButton(
+                      title: "Signup",
+                      color:Colors.green,
+                      textColor: Colors.white,
+                      onTap: () async {
+                        final valid = formKey.currentState!.validate();
+                        if (!valid) return;
+                        //Firebase Signup will take place here
+
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                        await AuthProvider.signUp(
+                            email: emailTextController.text.toUpperCase(),
+                            password: passwordTextController.text.toUpperCase(),
+                            name: nameTextController.text.toUpperCase(),
+                            collegeName: collegeNameTextController.text.toUpperCase());
+                        Navigator.pop(context);
+                        if (auth.currentUser != null) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AdminScreen.id,
+                            (Route<dynamic> route) => false,
+                          );
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ));
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  CustomTextField({
-    this.hideText = false,
-    required this.textController,
-    required this.placeholderText,
-  });
-
-  bool hideText;
-  TextEditingController textController;
-  String placeholderText;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        width: 0.75 * size.width,
-        child: TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) =>
-              value != null && value.isEmpty ? 'Enter min 1 characters' : null,
-          controller: textController,
-          obscureText: hideText,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            labelText: placeholderText,
-          ),
-        ),
-      ),
-    );
   }
 }

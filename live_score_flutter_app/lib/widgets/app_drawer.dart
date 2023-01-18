@@ -12,7 +12,12 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(children: [
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Hero(tag:"main-image",child: Image.asset("assets/sports_auth.png")),
+        ),
         ListTile(
+          leading: const Icon(Icons.person,color:Colors.blue),
           title: const Text('Login/Signup'),
           onTap: () {
             Navigator.pop(context);
@@ -20,6 +25,7 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.visibility_rounded,color:Colors.blue),
           title: const Text('Ongoing Games'),
           onTap: () {
             Navigator.pop(context);
@@ -27,6 +33,7 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.history,color:Colors.blue),
           title: const Text('Previous Games'),
           onTap: () {
             Navigator.pop(context);
@@ -34,6 +41,7 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.newspaper,color:Colors.blue),
           title: const Text('Announcements'),
           onTap: () {
             Navigator.pop(context);

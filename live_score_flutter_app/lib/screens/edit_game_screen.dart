@@ -32,67 +32,69 @@ class _EditGameScreenState extends State<EditGameScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    currentGame.gameType,
-                    style: const TextStyle(
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w300,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.88,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      currentGame.gameType,
+                      style: const TextStyle(
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) =>
-                              EndGameDialogBox(currentGame: currentGame));
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text("End Game",
-                        style: TextStyle(fontSize: 18.0)),
-                  )
-                ],
-              ),
-              const SizedBox(height: 30.0),
-              ControlsBox(
-                teamName: currentGame.team1,
-                isScore1: true,
-              ),
-              const SizedBox(height: 20.0),
-              ControlsBox(
-                teamName: currentGame.team2,
-                isScore1: false,
-              ),
-              const SizedBox(height: 10.0),
-              TextField(
-                controller: keyMomentsTextController,
-                decoration: InputDecoration(
-                  hintText: "Key moments",
-                  fillColor: Colors.red,
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  suffixIcon: IconButton(
+                    TextButton(
                       onPressed: () async {
-                        await Provider.of<GamesAdminProvider>(context,
-                                listen: false)
-                            .sendKeyMoments(keyMomentsTextController.text);
-                        keyMomentsTextController.clear();
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                EndGameDialogBox(currentGame: currentGame));
                       },
-                      icon: const Icon(Icons.send)),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("End Game",
+                          style: TextStyle(fontSize: 18.0)),
+                    )
+                  ],
                 ),
-              ),
-            ],
+                ControlsBox(
+                  teamName: currentGame.team1,
+                  isScore1: true,
+                  col:Colors.blue,
+                ),
+                ControlsBox(
+                  teamName: currentGame.team2,
+                  isScore1: false,
+                  col:Colors.green
+                ),
+                TextField(
+                  controller: keyMomentsTextController,
+                  decoration: InputDecoration(
+                    hintText: "Key moments",
+                    fillColor: Colors.red,
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    suffixIcon: IconButton(
+                        onPressed: () async {
+                          await Provider.of<GamesAdminProvider>(context,
+                                  listen: false)
+                              .sendKeyMoments(keyMomentsTextController.text);
+                          keyMomentsTextController.clear();
+                        },
+                        icon: const Icon(Icons.send)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -159,9 +161,11 @@ class _EndGameDialogBoxState extends State<EndGameDialogBox> {
 class ControlsBox extends StatelessWidget {
   String teamName;
   bool isScore1;
+  Color col;
   ControlsBox({
     this.teamName = '',
     this.isScore1 = true,
+    this.col = Colors.white,
   });
 
   @override
@@ -170,69 +174,65 @@ class ControlsBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
+        color:col,
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-        border: Border.all(width: 2.0),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             teamName,
             style: const TextStyle(
+              color: Colors.white,
               fontSize: 25.0,
             ),
           ),
-          const SizedBox(height: 20.0),
-          Column(
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Text(
+              (isScore1 ? currentGame.score1 : currentGame.score2)
+                  .toString(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 35.0,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Text(
-                  (isScore1 ? currentGame.score1 : currentGame.score2)
-                      .toString(),
-                  style: const TextStyle(
-                    fontSize: 35.0,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Provider.of<GamesAdminProvider>(context, listen: false)
+                        .changeScore(isIncrease: true, isScore1: isScore1);
+                  },
+                  icon: const Icon(
+                    Icons.add,
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Provider.of<GamesAdminProvider>(context, listen: false)
-                            .changeScore(isIncrease: true, isScore1: isScore1);
-                      },
-                      icon: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
+              const SizedBox(width: 50.0),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Provider.of<GamesAdminProvider>(context, listen: false)
+                        .changeScore(isIncrease: false, isScore1: isScore1);
+                  },
+                  icon: const Icon(
+                    Icons.remove,
+                    color: Colors.white,
                   ),
-                  const SizedBox(width: 50.0),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Provider.of<GamesAdminProvider>(context, listen: false)
-                            .changeScore(isIncrease: false, isScore1: isScore1);
-                      },
-                      icon: const Icon(
-                        Icons.remove,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              )
+                ),
+              ),
             ],
           ),
         ],
