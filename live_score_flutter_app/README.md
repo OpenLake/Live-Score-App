@@ -79,6 +79,9 @@ Here is the demo video of working of this app: [Watch the Video](https://youtu.b
   }
 ```
 
+### Apk link: 
+[Live Score Apk Download](https://drive.google.com/file/d/15Oe7inzXqqoRK0KAg_L7alOm9GaOZX8C/view?usp=share_link)
+
 ## Contact
 
 - [Faiz Khan](https://github.com/FaizFk/) | [LinkedIn](https://linkedin.com/in/faiz-khan-4793731ba/)
